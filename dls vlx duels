@@ -221,7 +221,7 @@ if autoShoot and currentTool then
 local enemy = getClosestVisibleEnemy()
 if enemy then
 tryShoot(enemy)
-task.wait(0.07)
+task.wait(0.05)
 end
 end
 end
@@ -246,6 +246,26 @@ end
 end
 end
 
+end)
+
+-- AUTO EQUIP TOOL
+RunService.Heartbeat:Connect(function()
+    if autoShootKill then
+        local char = LocalPlayer.Character
+        local backpack = LocalPlayer:FindFirstChild("Backpack")
+
+        if char and backpack then
+            -- Si no hay tool equipada
+            if not currentTool then
+                for _, tool in pairs(backpack:GetChildren()) do
+                    if tool:IsA("Tool") and tool:FindFirstChild("fire") then
+                        tool.Parent = char -- equipa automáticamente
+                        break
+                    end
+                end
+            end
+        end
+    end
 end)
 
 -- CLICK

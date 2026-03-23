@@ -7,10 +7,40 @@ local executor = (identifyexecutor and identifyexecutor()) or "Unknown"
 local GameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
 
 local Window = Rayfield:CreateWindow({
-Name = "Salvred Hub Porno | " .. executor .. " | " .. GameName,
-LoadingTitle = "Salvred Hub (PANO)",
-LoadingSubtitle = "[DUELS] Murderers Vs Sheriffs",
-ConfigurationSaving = { Enabled = false }
+   Name = "Salvred Hub Porno | " .. executor .. " | " .. GameName,
+   Icon = 15403073949,
+   LoadingTitle = "Salvred Hub (PANO)",
+   LoadingSubtitle = "[DUELS] Murderers Vs Sheriffs",
+   ShowText = "Rayfield Mobile",
+   Theme = "DarkBlue",
+
+   ToggleUIKeybind = "K",
+
+   DisableRayfieldPrompts = false,
+   DisableBuildWarnings = false,
+
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = nil,
+      FileName = "FREE FIRE ARCHIVOS PARA DAR AMARILLO"
+   },
+
+   Discord = {
+      Enabled = false,
+      Invite = "noinvitelink",
+      RememberJoins = true
+   },
+
+   KeySystem = false,
+   KeySettings = {
+      Title = "Untitled",
+      Subtitle = "Key System",
+      Note = "No method of obtaining the key is provided",
+      FileName = "Key",
+      SaveKey = true,
+      GrabKeyFromSite = false,
+      Key = {"Hello"}
+   }
 })
 
 -- Servicios
@@ -431,33 +461,15 @@ TextChatService.OnIncomingMessage = function(message)
     end
 end
 
-local SettingsTab = Window:CreateTab("SettingsTab", 4483362458) -- ícono opcional
+local SettingsTab = Window:CreateTab("SettingsTab", 15402995645) -- ícono opcional
 
 local ThemesSection = SettingsTab:CreateSection("Temas")
 
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
-local Window = Rayfield:CreateWindow({
-    Name = "Mi GUI Rayfield",
-    LoadingTitle = "Cargando GUI...",
-    LoadingSubtitle = "Espera un momento",
-    ConfigurationSaving = {
-        Enabled = true,
-        FolderName = "MiGUIConfig",
-        FileName = "MiGUI"
-    },
-    Theme = "Default",
-    KeySystem = false
-})
-
-local SettingsTab = Window:CreateTab("SettingsTab", 4483362458)
-
--- Botones directos, aplican ModifyTheme con comillas simples
 SettingsTab:CreateButton({
     Name = "Default",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme('Default')
+            Window:ModifyTheme("Default")
         end)
     end
 })
@@ -466,7 +478,7 @@ SettingsTab:CreateButton({
     Name = "AmberGlow",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme('AmberGlow')
+            Window:ModifyTheme("AmberGlow")
         end)
     end
 })
@@ -475,7 +487,7 @@ SettingsTab:CreateButton({
     Name = "Amethyst",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme('Amethyst')
+            Window:ModifyTheme("Amethyst")
         end)
     end
 })
@@ -484,7 +496,7 @@ SettingsTab:CreateButton({
     Name = "Bloom",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme('Bloom')
+            Window:ModifyTheme("Bloom")
         end)
     end
 })
@@ -493,7 +505,7 @@ SettingsTab:CreateButton({
     Name = "DarkBlue",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme('DarkBlue')
+            Window:ModifyTheme("DarkBlue")
         end)
     end
 })
@@ -502,7 +514,7 @@ SettingsTab:CreateButton({
     Name = "Green",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme('Green')
+            Window:ModifyTheme("Green")
         end)
     end
 })
@@ -511,7 +523,7 @@ SettingsTab:CreateButton({
     Name = "Light",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme('Light')
+            Window:ModifyTheme("Light")
         end)
     end
 })
@@ -520,7 +532,7 @@ SettingsTab:CreateButton({
     Name = "Ocean",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme('Ocean')
+            Window:ModifyTheme("Ocean")
         end)
     end
 })
@@ -529,7 +541,7 @@ SettingsTab:CreateButton({
     Name = "Serenity",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme('Serenity')
+            Window:ModifyTheme("Serenity")
         end)
     end
 })
@@ -537,5 +549,7 @@ SettingsTab:CreateButton({
 Rayfield:Notify({
 Title = "Salvred Hub",
 Content = "Script cargado correctamente, puede que tu pito se haga mas chico.",
-Duration = 5
+Duration = 10
 })
+
+Rayfield:LoadConfiguration()

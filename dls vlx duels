@@ -10,7 +10,7 @@ local Window = Rayfield:CreateWindow({
 Name = "Salvred Hub Porno | " .. executor .. " | " .. GameName,
 LoadingTitle = "Salvred Hub (PANO)",
 LoadingSubtitle = "[DUELS] Murderers Vs Sheriffs",
-ConfigurationSaving = { Enabled = true }
+ConfigurationSaving = { Enabled = false }
 })
 
 -- Servicios
@@ -430,6 +430,33 @@ TextChatService.OnIncomingMessage = function(message)
         end
     end
 end
+
+local SettingsTab = Window:CreateTab("SettingsTab", 4483362458) -- ícono opcional
+
+-- Crear un dropdown para seleccionar tema
+local ThemesDropdown = SettingsTab:CreateDropdown({
+    Name = "Seleccionar Tema",
+    Options = {"Default","Amber Glow","Amethyst","Bloom","Dark Blue","Green","Light","Ocean","Serenity"},
+    CurrentOption = "Default", -- opción inicial
+    Flag = "ThemeDropdown",
+    Callback = function(SelectedTheme)
+        -- Convertir nombres a los identificadores que Rayfield usa
+        local ThemeIdentifiers = {
+            ["Default"] = "Default",
+            ["Amber Glow"] = "AmberGlow",
+            ["Amethyst"] = "Amethyst",
+            ["Bloom"] = "Bloom",
+            ["Dark Blue"] = "DarkBlue",
+            ["Green"] = "Green",
+            ["Light"] = "Light",
+            ["Ocean"] = "Ocean",
+            ["Serenity"] = "Serenity"
+        }
+        local ThemeID = ThemeIdentifiers[SelectedTheme]
+        -- Aplicar el tema
+        Window:ModifyTheme(ThemeID)
+    end
+})
 
 Rayfield:Notify({
 Title = "Salvred Hub",

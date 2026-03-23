@@ -435,10 +435,10 @@ local SettingsTab = Window:CreateTab("SettingsTab", 4483362458) -- ícono opcion
 
 local ThemeIdentifiers = {
     ["Default"] = "Default",
-    ["Amber Glow"] = "AmberGlow",
+    ["AmberGlow"] = "AmberGlow",
     ["Amethyst"] = "Amethyst",
     ["Bloom"] = "Bloom",
-    ["Dark Blue"] = "DarkBlue",
+    ["DarkBlue"] = "DarkBlue",
     ["Green"] = "Green",
     ["Light"] = "Light",
     ["Ocean"] = "Ocean",
@@ -448,15 +448,14 @@ local ThemeIdentifiers = {
 -- Crear dropdown para seleccionar tema
 SettingsTab:CreateDropdown({
     Name = "Seleccionar Tema",
-    Options = {"Default","Amber Glow","Amethyst","Bloom","Dark Blue","Green","Light","Ocean","Serenity"},
+    Options = {"Default","AmberGlow","Amethyst","Bloom","DarkBlue","Green","Light","Ocean","Serenity"},
     CurrentOption = "Default",
     Flag = "ThemeDropdown",
     Callback = function(SelectedTheme)
         local ThemeID = ThemeIdentifiers[SelectedTheme]
         if ThemeID then
-            -- Aplicar el tema usando ModifyTheme
             local success, err = pcall(function()
-                Window:ModifyTheme(ThemeID)
+                Window:ModifyTheme(ThemeID) -- aplicar tema usando identificador exacto
             end)
             if not success then
                 warn("No se pudo aplicar el tema: "..err)

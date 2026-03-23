@@ -435,11 +435,29 @@ local SettingsTab = Window:CreateTab("SettingsTab", 4483362458) -- ícono opcion
 
 local ThemesSection = SettingsTab:CreateSection("Temas")
 
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+    Name = "Mi GUI Rayfield",
+    LoadingTitle = "Cargando GUI...",
+    LoadingSubtitle = "Espera un momento",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "MiGUIConfig",
+        FileName = "MiGUI"
+    },
+    Theme = "Default",
+    KeySystem = false
+})
+
+local SettingsTab = Window:CreateTab("SettingsTab", 4483362458)
+
+-- Botones directos, aplican ModifyTheme con comillas simples
 SettingsTab:CreateButton({
     Name = "Default",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme("Default")
+            Window:ModifyTheme('Default')
         end)
     end
 })
@@ -448,7 +466,7 @@ SettingsTab:CreateButton({
     Name = "AmberGlow",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme("AmberGlow")
+            Window:ModifyTheme('AmberGlow')
         end)
     end
 })
@@ -457,7 +475,7 @@ SettingsTab:CreateButton({
     Name = "Amethyst",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme("Amethyst")
+            Window:ModifyTheme('Amethyst')
         end)
     end
 })
@@ -466,7 +484,7 @@ SettingsTab:CreateButton({
     Name = "Bloom",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme("Bloom")
+            Window:ModifyTheme('Bloom')
         end)
     end
 })
@@ -475,7 +493,7 @@ SettingsTab:CreateButton({
     Name = "DarkBlue",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme("DarkBlue")
+            Window:ModifyTheme('DarkBlue')
         end)
     end
 })
@@ -484,7 +502,7 @@ SettingsTab:CreateButton({
     Name = "Green",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme("Green")
+            Window:ModifyTheme('Green')
         end)
     end
 })
@@ -493,7 +511,7 @@ SettingsTab:CreateButton({
     Name = "Light",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme("Light")
+            Window:ModifyTheme('Light')
         end)
     end
 })
@@ -502,7 +520,7 @@ SettingsTab:CreateButton({
     Name = "Ocean",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme("Ocean")
+            Window:ModifyTheme('Ocean')
         end)
     end
 })
@@ -511,7 +529,7 @@ SettingsTab:CreateButton({
     Name = "Serenity",
     Callback = function()
         pcall(function()
-            Window:ModifyTheme("Serenity")
+            Window:ModifyTheme('Serenity')
         end)
     end
 })

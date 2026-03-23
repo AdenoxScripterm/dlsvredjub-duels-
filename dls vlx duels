@@ -445,7 +445,7 @@ local ThemeIdentifiers = {
     ["Serenity"] = "Serenity"
 }
 
--- Crear dropdown para cambiar tema
+-- Crear dropdown para seleccionar tema
 SettingsTab:CreateDropdown({
     Name = "Seleccionar Tema",
     Options = {"Default","Amber Glow","Amethyst","Bloom","Dark Blue","Green","Light","Ocean","Serenity"},
@@ -453,11 +453,14 @@ SettingsTab:CreateDropdown({
     Flag = "ThemeDropdown",
     Callback = function(SelectedTheme)
         local ThemeID = ThemeIdentifiers[SelectedTheme]
-        if ThemeID and Rayfield.ThemeManager then
-            -- Cambiar el tema de manera segura
-            Rayfield.ThemeManager:SetTheme(ThemeID)
-        else
-            warn("No se pudo cambiar el tema: "..tostring(SelectedTheme))
+        if ThemeID then
+            -- Aplicar el tema usando ModifyTheme
+            local success, err = pcall(function()
+                Window:ModifyTheme(ThemeID)
+            end)
+            if not success then
+                warn("No se pudo aplicar el tema: "..err)
+            end
         end
     end
 })

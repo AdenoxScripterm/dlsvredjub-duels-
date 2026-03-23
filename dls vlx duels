@@ -1,0 +1,393 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+Name = "Salvred Hub | DUELOS VS SHERIFFS",
+LoadingTitle = "Salvred Hub (PANO)",
+LoadingSubtitle = "[DUELS] Murderers Vs Sheriffs",
+ConfigurationSaving = { Enabled = true }
+})
+
+-- Servicios
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local LocalPlayer = Players.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+local Camera = Workspace.CurrentCamera
+
+-- Variables
+_G.SilentAim = false
+_G.HighlightESP = false
+local clickShoot = false
+local autoShoot = false
+local autoShootKill = false
+local currentTool = nil
+local IsHitboxActive = false
+local CurrentHitboxSize = 20
+local CurrentHitboxTransparency = 0.5
+
+-- TEAM DETECT
+local function getTeamFrames()
+local pg = LocalPlayer:FindFirstChildOfClass("PlayerGui")
+if not pg then return end
+
+local main = pg:FindFirstChild("Main")
+local mgf = main and main:FindFirstChild("MainGameFrame")
+local pf = mgf and mgf:FindFirstChild("PlayersFrame")
+
+if not pf then return end
+return pf:FindFirstChild("TeamRedFrame"), pf:FindFirstChild("TeamBlueFrame")
+
+end
+
+local function getFramePlayerNames(frame)
+if not frame then return {} end
+local names = {}
+
+for _, child in pairs(frame:GetChildren()) do
+if child:IsA("Frame") then
+table.insert(names, child.Name)
+end
+end
+
+return names
+
+end
+
+local function getEnemyPlayers()
+local red, blue = getTeamFrames()
+if not red or not blue then return {} end
+
+local lpName = LocalPlayer.Name:gsub("%s+", "")
+local redNames = getFramePlayerNames(red)
+local blueNames = getFramePlayerNames(blue)
+
+local inRed = table.find(redNames, lpName) ~= nil
+local enemyFrame = inRed and blue or red
+
+local enemies = {}
+for _, name in pairs(getFramePlayerNames(enemyFrame)) do
+local p = Players:FindFirstChild(name)
+if p and p ~= LocalPlayer then
+table.insert(enemies, p)
+end
+end
+
+return enemies
+
+end
+
+-- SILENT AIM
+local function getBestSilentTarget()
+local target = nil
+local shortestDistance = math.huge
+
+for _, v in pairs(Players:GetPlayers()) do
+if v ~= LocalPlayer and v.Character then
+local head = v.Character:FindFirstChild("Head")
+local hum = v.Character:FindFirstChild("Humanoid")
+
+if head and hum and hum.Health > 0 then
+local isEnemy = (v.Team ~= LocalPlayer.Team or v.Team == nil)
+
+if isEnemy then      
+        local pos = Camera:WorldToViewportPoint(head.Position)      
+        local distance = (Vector2.new(pos.X, pos.Y) - Vector2.new(Mouse.X, Mouse.Y)).Magnitude      
+
+        if distance < shortestDistance then      
+            shortestDistance = distance      
+            target = head      
+        end      
+    end      
+end
+
+end
+
+end
+
+return target
+
+end
+
+-- HOOK
+local mt = getrawmetatable(game)
+local oldIndex = mt.__index
+setreadonly(mt, false)
+
+mt.__index = newcclosure(function(self, index)
+if _G.SilentAim and self == Mouse and (index == "Hit" or index == "Target") then
+local target = getBestSilentTarget()
+if target then
+return index == "Hit" and target.CFrame or target
+end
+end
+return oldIndex(self, index)
+end)
+
+setreadonly(mt, true)
+
+-- AIM (VISIBLE)
+local function getClosestVisibleEnemy()
+local enemies = getEnemyPlayers()
+if #enemies == 0 then return nil end
+
+local hrp = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+if not hrp then return nil end
+
+local closest = nil
+local minDist = math.huge
+
+for _, p in pairs(enemies) do
+local ch = p.Character
+local hum = ch and ch:FindFirstChild("Humanoid")
+local root = ch and ch:FindFirstChild("HumanoidRootPart")
+
+if hum and hum.Health > 0 and root then
+local dist = (hrp.Position - root.Position).Magnitude
+
+if dist < minDist then      
+    local params = RaycastParams.new()      
+    params.FilterDescendantsInstances = {LocalPlayer.Character}      
+    params.FilterType = Enum.RaycastFilterType.Blacklist      
+
+    local result = Workspace:Raycast(hrp.Position, root.Position - hrp.Position, params)      
+
+    if not result or result.Instance:IsDescendantOf(ch) then      
+        minDist = dist      
+        closest = p      
+    end      
+end
+
+end
+
+end
+
+return closest
+
+end
+
+-- DISPARO
+local function tryShoot(target)
+if not target or not currentTool then return end
+
+local hrp = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+if not hrp then return end
+
+local targetHrp = target.Character and target.Character:FindFirstChild("HumanoidRootPart")
+if not targetHrp then return end
+
+local pos = targetHrp.Position
+
+pcall(function() currentTool.fire:FireServer() end)
+pcall(function() currentTool.kill:FireServer(target, (pos - hrp.Position).Unit, hrp.Position) end)
+
+local beam = ReplicatedStorage:FindFirstChild("LocalBeam")
+if beam then
+beam:Fire(currentTool.Handle or currentTool, pos)
+end
+
+end
+
+-- TOOL DETECT
+RunService.Heartbeat:Connect(function()
+local char = LocalPlayer.Character
+currentTool = nil
+
+if char then
+for _, t in pairs(char:GetChildren()) do
+if t:IsA("Tool") and t:FindFirstChild("fire") then
+currentTool = t
+break
+end
+end
+end
+
+end)
+
+-- AUTO SHOOT NORMAL
+task.spawn(function()
+while true do
+RunService.Heartbeat:Wait()
+
+if autoShoot and currentTool then
+local enemy = getClosestVisibleEnemy()
+if enemy then
+tryShoot(enemy)
+task.wait(0.07)
+end
+end
+end
+
+end)
+
+-- AUTO SHOOT KILL (ATRAVIESA)
+task.spawn(function()
+while true do
+RunService.Heartbeat:Wait()
+
+if autoShootKill and currentTool then
+for _, enemy in pairs(getEnemyPlayers()) do
+if enemy and enemy.Character then
+local hum = enemy.Character:FindFirstChild("Humanoid")
+if hum and hum.Health > 0 then
+tryShoot(enemy)
+task.wait(0.05)
+end
+end
+end
+end
+end
+
+end)
+
+-- CLICK
+Mouse.Button1Down:Connect(function()
+if clickShoot and currentTool then
+local enemy = getClosestVisibleEnemy()
+if enemy then
+tryShoot(enemy)
+end
+end
+end)
+
+-- UI
+local GunTab = Window:CreateTab("Guns", 4483362458)
+
+GunTab:CreateToggle({
+Name = "Silent Aim (Disimulado)",
+CurrentValue = false,
+Callback = function(v) _G.SilentAim = v end,
+})
+
+GunTab:CreateToggle({
+Name = "Silent Aim (Descarado)",
+CurrentValue = false,
+Callback = function(v) clickShoot = v end
+})
+
+GunTab:CreateToggle({
+Name = "Auto Shoot",
+CurrentValue = false,
+Callback = function(v) autoShoot = v end
+})
+
+GunTab:CreateToggle({
+Name = "Auto Shoot (Auto Kill)",
+CurrentValue = false,
+Callback = function(v) autoShootKill = v end
+})
+
+local VisTab = Window:CreateTab("Visuals", 11433519636)
+
+VisTab:CreateToggle({
+Name = "ESP Highlight Dorado",
+CurrentValue = false,
+Callback = function(v) _G.HighlightESP = v end,
+})
+
+-- ESP ENEMIGOS
+RunService.RenderStepped:Connect(function()
+local enemies = getEnemyPlayers()
+
+for _, p in pairs(Players:GetPlayers()) do
+if p ~= LocalPlayer and p.Character then
+local highlight = p.Character:FindFirstChild("GoldenHighlight")
+local hum = p.Character:FindFirstChild("Humanoid")
+
+local isEnemy = table.find(enemies, p)
+
+if _G.HighlightESP and hum and hum.Health > 0 and isEnemy then      
+    if not highlight then      
+        highlight = Instance.new("Highlight")      
+        highlight.Name = "GoldenHighlight"      
+        highlight.FillColor = Color3.fromRGB(255,215,0)      
+        highlight.Parent = p.Character      
+    end      
+    highlight.Enabled = true      
+else      
+    if highlight then      
+        highlight.Enabled = false      
+    end      
+end
+
+end
+
+end
+
+end)
+
+-- MISC
+local MiscTab = Window:CreateTab("Misc", 4483362458)
+
+MiscTab:CreateButton({
+Name = "YouTube Música (Spotify Temu)",
+Callback = function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-YouTube-Music-Player-72222"))()
+end
+})
+
+MiscTab:CreateButton({
+Name = "Emotes y Animaciones",
+Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/7yd7/Hub/refs/heads/Branch/GUIS/Emotes.lua"))()
+end
+})
+
+MiscTab:CreateSlider({
+Name = "Hitbox Tamaño",
+Range = {10, 40},
+Increment = 1,
+Suffix = "Size",
+CurrentValue = CurrentHitboxSize,
+Flag = "HitboxSize",
+Callback = function(Value)
+CurrentHitboxSize = Value
+end
+})
+
+MiscTab:CreateToggle({
+Name = "Activar Hitbox",
+CurrentValue = false,
+Flag = "HitboxToggle",
+Callback = function(Value)
+IsHitboxActive = Value
+end
+})
+
+MiscTab:CreateInput({
+Name = "Hitbox Transparencia",
+CurrentValue = "",
+PlaceholderText = "0 - 1",
+RemoveTextAfterFocusLost = false,
+Flag = "HitboxOpacity",
+Callback = function(Text)
+local num = tonumber(Text)
+if num then
+CurrentHitboxTransparency = math.clamp(num, 0, 1)
+end
+end
+})
+
+-- Lógica para aplicar los cambios solo a enemigos
+RunService.RenderStepped:Connect(function()
+if IsHitboxActive then
+for _, player in pairs(getEnemyPlayers()) do
+if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+local root = player.Character.HumanoidRootPart
+root.Size = Vector3.new(CurrentHitboxSize, CurrentHitboxSize, CurrentHitboxSize)
+root.Transparency = CurrentHitboxTransparency
+root.BrickColor = BrickColor.new("Really black")
+root.Material = Enum.Material.Neon
+root.CanCollide = false
+end
+end
+end
+end)
+
+Rayfield:Notify({
+Title = "Salvred Hub",
+Content = "Script cargado correctamente",
+Duration = 5
+})

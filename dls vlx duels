@@ -1,7 +1,13 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
+-- Executor name (seguro)
+local executor = (identifyexecutor and identifyexecutor()) or "Unknown"
+
+-- Nombre del juego
+local GameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+
 local Window = Rayfield:CreateWindow({
-Name = "Salvred Hub | DUELOS VS SHERIFFS",
+Name = "SalvredHub: Reborn | " .. executor .. " | " .. GameName,
 LoadingTitle = "Salvred Hub (PANO)",
 LoadingSubtitle = "[DUELS] Murderers Vs Sheriffs",
 ConfigurationSaving = { Enabled = true }

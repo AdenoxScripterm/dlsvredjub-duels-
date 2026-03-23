@@ -433,36 +433,25 @@ end
 
 local SettingsTab = Window:CreateTab("SettingsTab", 4483362458) -- ícono opcional
 
-local ThemeIdentifiers = {
-    ["Default"] = "Default",
-    ["AmberGlow"] = "AmberGlow",
-    ["Amethyst"] = "Amethyst",
-    ["Bloom"] = "Bloom",
-    ["DarkBlue"] = "DarkBlue",
-    ["Green"] = "Green",
-    ["Light"] = "Light",
-    ["Ocean"] = "Ocean",
-    ["Serenity"] = "Serenity"
-}
+local ThemesSection = SettingsTab:CreateSection("Temas")
 
--- Crear dropdown para seleccionar tema
-SettingsTab:CreateDropdown({
-    Name = "Seleccionar Tema",
-    Options = {"Default","AmberGlow","Amethyst","Bloom","DarkBlue","Green","Light","Ocean","Serenity"},
-    CurrentOption = "Default",
-    Flag = "ThemeDropdown",
-    Callback = function(SelectedTheme)
-        local ThemeID = ThemeIdentifiers[SelectedTheme]
-        if ThemeID then
+-- Lista de temas válidos
+local Themes = {"Default","AmberGlow","Amethyst","Bloom","DarkBlue","Green","Light","Ocean","Serenity"}
+
+-- Crear un botón por cada tema
+for _, themeName in ipairs(Themes) do
+    ThemesSection:CreateButton({
+        Name = themeName,
+        Callback = function()
             local success, err = pcall(function()
-                Window:ModifyTheme(ThemeID) -- aplicar tema usando identificador exacto
+                Window:ModifyTheme(themeName)
             end)
             if not success then
                 warn("No se pudo aplicar el tema: "..err)
             end
         end
-    end
-})
+    })
+end
 
 Rayfield:Notify({
 Title = "Salvred Hub",

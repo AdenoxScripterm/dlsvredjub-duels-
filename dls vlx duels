@@ -259,7 +259,7 @@ end
 end)
 
 -- UI
-local GunTab = Window:CreateTab("Guns", 4483362458)
+local GunTab = Window:CreateTab("Guns", 15403025691)
 
 GunTab:CreateToggle({
 Name = "Silent Aim (Disimulado)",
@@ -285,7 +285,7 @@ CurrentValue = false,
 Callback = function(v) autoShootKill = v end
 })
 
-local VisTab = Window:CreateTab("Visuals", 11433519636)
+local VisTab = Window:CreateTab("Visuals", 15403203770)
 
 VisTab:CreateToggle({
 Name = "ESP Highlight Dorado",
@@ -325,7 +325,7 @@ end
 end)
 
 -- MISC
-local MiscTab = Window:CreateTab("Misc", 4483362458)
+local MiscTab = Window:CreateTab("Misc", 15403119388)
 
 MiscTab:CreateButton({
 Name = "YouTube Música (Spotify Temu)",

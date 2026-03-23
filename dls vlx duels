@@ -7,7 +7,7 @@ local executor = (identifyexecutor and identifyexecutor()) or "Unknown"
 local GameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
 
 local Window = Rayfield:CreateWindow({
-Name = "SalvredHub: Reborn | " .. executor .. " | " .. GameName,
+Name = "Salvred Hub Porno | " .. executor .. " | " .. GameName,
 LoadingTitle = "Salvred Hub (PANO)",
 LoadingSubtitle = "[DUELS] Murderers Vs Sheriffs",
 ConfigurationSaving = { Enabled = true }

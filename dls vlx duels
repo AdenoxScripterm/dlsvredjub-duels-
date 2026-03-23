@@ -435,23 +435,86 @@ local SettingsTab = Window:CreateTab("SettingsTab", 4483362458) -- ícono opcion
 
 local ThemesSection = SettingsTab:CreateSection("Temas")
 
--- Lista de temas válidos
-local Themes = {"Default","AmberGlow","Amethyst","Bloom","DarkBlue","Green","Light","Ocean","Serenity"}
+SettingsTab:CreateButton({
+    Name = "Default",
+    Callback = function()
+        pcall(function()
+            Window:ModifyTheme("Default")
+        end)
+    end
+})
 
--- Crear un botón por cada tema
-for _, themeName in ipairs(Themes) do
-    ThemesSection:CreateButton({
-        Name = themeName,
-        Callback = function()
-            local success, err = pcall(function()
-                Window:ModifyTheme(themeName)
-            end)
-            if not success then
-                warn("No se pudo aplicar el tema: "..err)
-            end
-        end
-    })
-end
+SettingsTab:CreateButton({
+    Name = "AmberGlow",
+    Callback = function()
+        pcall(function()
+            Window:ModifyTheme("AmberGlow")
+        end)
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "Amethyst",
+    Callback = function()
+        pcall(function()
+            Window:ModifyTheme("Amethyst")
+        end)
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "Bloom",
+    Callback = function()
+        pcall(function()
+            Window:ModifyTheme("Bloom")
+        end)
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "DarkBlue",
+    Callback = function()
+        pcall(function()
+            Window:ModifyTheme("DarkBlue")
+        end)
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "Green",
+    Callback = function()
+        pcall(function()
+            Window:ModifyTheme("Green")
+        end)
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "Light",
+    Callback = function()
+        pcall(function()
+            Window:ModifyTheme("Light")
+        end)
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "Ocean",
+    Callback = function()
+        pcall(function()
+            Window:ModifyTheme("Ocean")
+        end)
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "Serenity",
+    Callback = function()
+        pcall(function()
+            Window:ModifyTheme("Serenity")
+        end)
+    end
+})
 
 Rayfield:Notify({
 Title = "Salvred Hub",

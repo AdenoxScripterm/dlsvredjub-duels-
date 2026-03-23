@@ -18,6 +18,7 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TextChatService = game:GetService("TextChatService")
 
 local LocalPlayer = Players.LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
@@ -363,7 +364,7 @@ end
 
 MiscTab:CreateSlider({
 Name = "Hitbox Tamaño",
-Range = {10, 40},
+Range = {10, 60},
 Increment = 1,
 Suffix = "Size",
 CurrentValue = CurrentHitboxSize,
@@ -412,8 +413,26 @@ end
 end
 end)
 
+MiscTab:CreateButton({
+    Name = "Ocultar UI",
+    Callback = function()
+        Rayfield:SetVisibility(false)
+    end
+})
+
+TextChatService.OnIncomingMessage = function(message)
+    local text = message.Text
+    local player = message.TextSource and game.Players:GetPlayerByUserId(message.TextSource.UserId)
+
+    if player == game.Players.LocalPlayer then
+        if string.find(string.lower(text), "liosberth") then
+            Rayfield:SetVisibility(true)
+        end
+    end
+end
+
 Rayfield:Notify({
 Title = "Salvred Hub",
-Content = "Script cargado correctamente",
+Content = "Script cargado correctamente, puede que tu pito se haga mas chico.",
 Duration = 5
 })

@@ -31,8 +31,8 @@ local Window = Rayfield:CreateWindow({
       RememberJoins = true
    },
 
-      KeySystem = false
-      })
+KeySystem = false
+})
 
 -- Servicios
 local Players = game:GetService("Players")

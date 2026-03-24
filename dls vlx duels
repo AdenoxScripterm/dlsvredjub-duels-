@@ -436,9 +436,7 @@ end)
 MiscTab:CreateButton({
    Name = "Ocultar UI",
    Callback = function()
-      keypress(Enum.KeyCode.K.Value)
-      task.wait(0.1)
-      keyrelease(Enum.KeyCode.K.Value)
+      print("lol")
    end,
 })
 

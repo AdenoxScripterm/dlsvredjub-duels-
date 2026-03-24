@@ -11,8 +11,8 @@ local Window = Rayfield:CreateWindow({
    Icon = 15403073949,
    LoadingTitle = "Salvred Hub (PANO)",
    LoadingSubtitle = "[DUELS] Murderers Vs Sheriffs",
-   ShowText = "Rayfield Mobile",
-   Theme = "DarkBlue",
+   ShowText = "Salvred Hub DUELS",
+   Theme = "Default",
 
    ToggleUIKeybind = "K",
 
@@ -20,7 +20,7 @@ local Window = Rayfield:CreateWindow({
    DisableBuildWarnings = false,
 
    ConfigurationSaving = {
-      Enabled = true,
+      Enabled = false,
       FolderName = nil,
       FileName = "FREE FIRE ARCHIVOS PARA DAR AMARILLO"
    },
@@ -31,7 +31,7 @@ local Window = Rayfield:CreateWindow({
       RememberJoins = true
    },
 
-   KeySystem = true,
+   KeySystem = false,
    KeySettings = {
       Title = "Salved Hub",
       Subtitle = "Sistema De Key",

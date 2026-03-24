@@ -56,6 +56,63 @@ local IsHitboxActive = false
 local CurrentHitboxSize = 20
 local CurrentHitboxTransparency = 0.5
 
+-- INVISIBLE SYSTEM
+local Invisible_Character = nil
+local Invisible_Humanoid = nil
+local Invisible_HRP = nil
+local IsInvisibleToggle = false
+local Invisible_VisibleParts = {}
+local Invisible_tool = nil
+local Invisible_Connections = {}
+local Invisible_ToggleEnabled = false
+
+local function SetupCharacter()
+    Invisible_Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    Invisible_Humanoid = Invisible_Character:WaitForChild("Humanoid")
+    Invisible_HRP = Invisible_Character:WaitForChild("HumanoidRootPart")
+    Invisible_VisibleParts = {}
+
+    for _, descendant in pairs(Invisible_Character:GetDescendants()) do
+        if descendant:IsA("BasePart") and descendant.Transparency == 0 then
+            table.insert(Invisible_VisibleParts, descendant)
+        end
+    end
+end
+
+local function ApplyInvisible(state)
+    IsInvisibleToggle = state
+    local transparency = state and 0.1 or 0
+
+    for _, part in pairs(Invisible_VisibleParts) do
+        part.Transparency = transparency
+    end
+end
+
+local function CreateTool()
+    if Invisible_tool and Invisible_tool.Parent then return end
+
+    Invisible_tool = Instance.new("Tool")
+    Invisible_tool.Name = "Invisible Tool"
+    Invisible_tool.RequiresHandle = false
+    Invisible_tool.Parent = LocalPlayer:WaitForChild("Backpack")
+
+    Invisible_tool.Equipped:Connect(function()
+        ApplyInvisible(true)
+    end)
+
+    Invisible_tool.Unequipped:Connect(function()
+        ApplyInvisible(false)
+    end)
+end
+
+local function RemoveTool()
+    if Invisible_tool then
+        Invisible_tool:Destroy()
+        Invisible_tool = nil
+        ApplyInvisible(false)
+    end
+end
+
 -- TEAM DETECT
 local function getTeamFrames()
 local pg = LocalPlayer:FindFirstChildOfClass("PlayerGui")
@@ -218,6 +275,24 @@ end
 
 end
 
+table.insert(Invisible_Connections,
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if IsInvisibleToggle and Invisible_HRP and Invisible_Humanoid then
+            local OriginalCFrame = Invisible_HRP.CFrame
+            local OriginalCameraOffset = Invisible_Humanoid.CameraOffset
+
+            local DownCFrame = OriginalCFrame * CFrame.new(0, -200000, 0)
+            Invisible_HRP.CFrame = DownCFrame
+            Invisible_Humanoid.CameraOffset = DownCFrame:ToObjectSpace(CFrame.new(OriginalCFrame.Position)).Position
+
+            task.wait()
+
+            Invisible_HRP.CFrame = OriginalCFrame
+            Invisible_Humanoid.CameraOffset = OriginalCameraOffset
+        end
+    end)
+)
+
 -- TOOL DETECT
 RunService.Heartbeat:Connect(function()
 local char = LocalPlayer.Character
@@ -322,9 +397,12 @@ Callback = function(v) autoShoot = v end
 })
 
 GunTab:CreateToggle({
-Name = "Auto Shoot (Auto Kill)",
-CurrentValue = false,
-Callback = function(v) autoShootKill = v end
+    Name = "Auto Shoot (Auto Kill)",
+    CurrentValue = false,
+    Callback = function(v)
+        autoShootKill = v
+        Invisible_ToggleEnabled = v
+    end
 })
 
 local VisTab = Window:CreateTab("Visuals", 15403203770)
@@ -434,6 +512,21 @@ end
 end
 end)
 
+MiscTab:CreateToggle({
+    Name = "Invisible Tool",
+    CurrentValue = false,
+    Callback = function(Value)
+        Invisible_ToggleEnabled = Value
+
+        if Value then
+            SetupCharacter()
+            CreateTool()
+        else
+            RemoveTool()
+        end
+    end
+})
+
 MiscTab:CreateButton({
    Name = "Ocultar UI",
    Callback = function()
@@ -450,3 +543,14 @@ Title = "Salvred Hub",
 Content = "Script cargado correctamente, puede que tu pito se haga mas chico.",
 Duration = 10
 })
+
+LocalPlayer.CharacterAdded:Connect(function()
+    Invisible_tool = nil
+    IsInvisibleToggle = false
+    SetupCharacter()
+
+    if Invisible_ToggleEnabled then
+        task.wait(0.5)
+        CreateTool()
+    end
+end)

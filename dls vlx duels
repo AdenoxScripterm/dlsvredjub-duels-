@@ -56,6 +56,62 @@ local IsHitboxActive = false
 local CurrentHitboxSize = 20
 local CurrentHitboxTransparency = 0.5
 
+-- INVISIBLE SYSTEM
+local Invisible_Character = nil
+local Invisible_Humanoid = nil
+local Invisible_HRP = nil
+local IsInvisibleToggle = false
+local Invisible_VisibleParts = {}
+local Invisible_tool = nil
+local Invisible_ToggleEnabled = false
+
+local function SetupInvisibleCharacter()
+    Invisible_Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    Invisible_Humanoid = Invisible_Character:WaitForChild("Humanoid")
+    Invisible_HRP = Invisible_Character:WaitForChild("HumanoidRootPart")
+    Invisible_VisibleParts = {}
+
+    for _, v in pairs(Invisible_Character:GetDescendants()) do
+        if v:IsA("BasePart") and v.Transparency == 0 then
+            table.insert(Invisible_VisibleParts, v)
+        end
+    end
+end
+
+local function ApplyInvisible(state)
+    IsInvisibleToggle = state
+    local transparency = IsInvisibleToggle and 0.1 or 0
+
+    for _, part in pairs(Invisible_VisibleParts) do
+        part.Transparency = transparency
+    end
+end
+
+local function CreateInvisibleTool()
+    if Invisible_tool then return end
+
+    Invisible_tool = Instance.new("Tool")
+    Invisible_tool.Name = "Invisible Tool"
+    Invisible_tool.RequiresHandle = false
+    Invisible_tool.Parent = LocalPlayer.Backpack
+
+    Invisible_tool.Equipped:Connect(function()
+        ApplyInvisible(true)
+    end)
+
+    Invisible_tool.Unequipped:Connect(function()
+        ApplyInvisible(false)
+    end)
+end
+
+local function RemoveInvisibleTool()
+    if Invisible_tool then
+        Invisible_tool:Destroy()
+        Invisible_tool = nil
+        ApplyInvisible(false)
+    end
+end
+
 -- TEAM DETECT
 local function getTeamFrames()
 local pg = LocalPlayer:FindFirstChildOfClass("PlayerGui")
@@ -218,6 +274,22 @@ end
 
 end
 
+RunService.Heartbeat:Connect(function()
+    if IsInvisibleToggle then
+        local OriginalCFrame = Invisible_HRP.CFrame
+        local OriginalCameraOffset = Invisible_Humanoid.CameraOffset
+
+        local DownCFrame = OriginalCFrame * CFrame.new(0, -200000, 0)
+        Invisible_HRP.CFrame = DownCFrame
+        Invisible_Humanoid.CameraOffset = DownCFrame:ToObjectSpace(CFrame.new(OriginalCFrame.Position)).Position
+
+        RunService.RenderStepped:Wait()
+
+        Invisible_HRP.CFrame = OriginalCFrame
+        Invisible_Humanoid.CameraOffset = OriginalCameraOffset
+    end
+end)
+
 -- TOOL DETECT
 RunService.Heartbeat:Connect(function()
 local char = LocalPlayer.Character
@@ -256,6 +328,9 @@ while true do
 RunService.Heartbeat:Wait()
 
 if autoShootKill and currentTool then
+if not IsInvisibleToggle then
+        SetupInvisibleCharacter()
+        ApplyInvisible(true)
 for _, enemy in pairs(getEnemyPlayers()) do
 if enemy and enemy.Character then
 local hum = enemy.Character:FindFirstChild("Humanoid")
@@ -324,7 +399,13 @@ Callback = function(v) autoShoot = v end
 GunTab:CreateToggle({
 Name = "Auto Shoot (Auto Kill)",
 CurrentValue = false,
-Callback = function(v) autoShootKill = v end
+Callback = function(v)
+    autoShootKill = v
+
+    if not v then
+        ApplyInvisible(false)
+    end
+end
 })
 
 local VisTab = Window:CreateTab("Visuals", 15403203770)
@@ -434,6 +515,21 @@ end
 end
 end)
 
+MiscTab:CreateToggle({
+    Name = "Invisible Tool",
+    CurrentValue = false,
+    Callback = function(v)
+        Invisible_ToggleEnabled = v
+
+        if v then
+            SetupInvisibleCharacter()
+            CreateInvisibleTool()
+        else
+            RemoveInvisibleTool()
+        end
+    end
+})
+
 MiscTab:CreateButton({
    Name = "Ocultar UI",
    Callback = function()
@@ -441,90 +537,19 @@ MiscTab:CreateButton({
    end,
 })
 
-local SettingsTab = Window:CreateTab("SettingsTab", 15402995645) -- ícono opcional
+local SettingsTab = Window:CreateTab("Settings", 15402995645) -- ícono opcional
 
 local ThemesSection = SettingsTab:CreateSection("Temas")
 
-SettingsTab:CreateButton({
-    Name = "Default",
-    Callback = function()
-        pcall(function()
-            Window:ModifyTheme("Default")
-        end)
-    end
-})
+LocalPlayer.CharacterAdded:Connect(function()
+    IsInvisibleToggle = false
+    SetupInvisibleCharacter()
 
-SettingsTab:CreateButton({
-    Name = "AmberGlow",
-    Callback = function()
-        pcall(function()
-            Window:ModifyTheme("AmberGlow")
-        end)
+    if Invisible_ToggleEnabled then
+        task.wait(0.5)
+        CreateInvisibleTool()
     end
-})
-
-SettingsTab:CreateButton({
-    Name = "Amethyst",
-    Callback = function()
-        pcall(function()
-            Window:ModifyTheme("Amethyst")
-        end)
-    end
-})
-
-SettingsTab:CreateButton({
-    Name = "Bloom",
-    Callback = function()
-        pcall(function()
-            Window:ModifyTheme("Bloom")
-        end)
-    end
-})
-
-SettingsTab:CreateButton({
-    Name = "DarkBlue",
-    Callback = function()
-        pcall(function()
-            Window:ModifyTheme("DarkBlue")
-        end)
-    end
-})
-
-SettingsTab:CreateButton({
-    Name = "Green",
-    Callback = function()
-        pcall(function()
-            Window:ModifyTheme("Green")
-        end)
-    end
-})
-
-SettingsTab:CreateButton({
-    Name = "Light",
-    Callback = function()
-        pcall(function()
-            Window:ModifyTheme("Light")
-        end)
-    end
-})
-
-SettingsTab:CreateButton({
-    Name = "Ocean",
-    Callback = function()
-        pcall(function()
-            Window:ModifyTheme("Ocean")
-        end)
-    end
-})
-
-SettingsTab:CreateButton({
-    Name = "Serenity",
-    Callback = function()
-        pcall(function()
-            Window:ModifyTheme("Serenity")
-        end)
-    end
-})
+end)
 
 Rayfield:Notify({
 Title = "Salvred Hub",

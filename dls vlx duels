@@ -385,7 +385,7 @@ end
 
 MiscTab:CreateSlider({
 Name = "Hitbox Tamaño",
-Range = {10, 60},
+Range = {1, 200},
 Increment = 1,
 Suffix = "Size",
 CurrentValue = CurrentHitboxSize,
@@ -437,7 +437,7 @@ end)
 MiscTab:CreateButton({
    Name = "Ocultar UI",
    Callback = function()
-      print("lol")
+      Rayfield:SetVisibility(false)
    end,
 })
 

@@ -22,7 +22,7 @@ local Window = Rayfield:CreateWindow({
    ConfigurationSaving = {
       Enabled = false,
       FolderName = nil,
-      FileName = "FREE FIRE ARCHIVOS PARA DAR AMARILLO"
+      FileName = "shx"
    },
 
    Discord = {
@@ -32,16 +32,6 @@ local Window = Rayfield:CreateWindow({
    },
 
    KeySystem = false,
-   KeySettings = {
-      Title = "Salved Hub",
-      Subtitle = "Sistema De Key",
-      Note = "La Key Es Free Fire La Key Se Salva",
-      FileName = "Key",
-      SaveKey = true,
-      GrabKeyFromSite = false,
-      Key = {"Free Fire"}
-   }
-})
 
 -- Servicios
 local Players = game:GetService("Players")
@@ -446,20 +436,9 @@ end)
 MiscTab:CreateButton({
     Name = "Ocultar UI",
     Callback = function()
-        Rayfield:SetVisibility(false)
+        Rayfield:Destroy()
     end
 })
-
-TextChatService.OnIncomingMessage = function(message)
-    local text = message.Text
-    local player = message.TextSource and game.Players:GetPlayerByUserId(message.TextSource.UserId)
-
-    if player == game.Players.LocalPlayer then
-        if string.find(string.lower(text), "liosberth") then
-            Rayfield:SetVisibility(true)
-        end
-    end
-end
 
 local SettingsTab = Window:CreateTab("SettingsTab", 15402995645) -- ícono opcional
 
@@ -551,5 +530,3 @@ Title = "Salvred Hub",
 Content = "Script cargado correctamente, puede que tu pito se haga mas chico.",
 Duration = 10
 })
-
-Rayfield:LoadConfiguration()

@@ -7,11 +7,11 @@ local executor = (identifyexecutor and identifyexecutor()) or "Unknown"
 local GameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
 
 local Window = Rayfield:CreateWindow({
-   Name = "Salvred Hub Porno | " .. executor .. " | " .. GameName,
+   Name = "Salvred Hub | " .. executor .. " | " .. GameName,
    Icon = 15403073949,
-   LoadingTitle = "Salvred Hub (PANO)",
+   LoadingTitle = "Salvred Hub (PANO) Tutax Loco",
    LoadingSubtitle = "[DUELS] Murderers Vs Sheriffs",
-   ShowText = "Salvred Hub DUELS",
+   ShowText = "Salvred Hub",
    Theme = "Default",
 
    ToggleUIKeybind = "K",

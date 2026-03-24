@@ -33,7 +33,7 @@ local Window = Rayfield:CreateWindow({
 
    KeySystem = true,
    KeySettings = {
-      Title = "Salvred Hub | " .. executor .. " | " .. GameName,
+      Title = "Salved Hub',
       Subtitle = "Sistema De Key",
       Note = "La Key Es "Free Fire" La Key Se Salva",
       FileName = "Key",

@@ -434,10 +434,12 @@ end
 end)
 
 MiscTab:CreateButton({
-    Name = "Ocultar UI",
-    Callback = function()
-        Rayfield:Destroy()
-    end
+   Name = "Ocultar UI",
+   Callback = function()
+      keypress(Enum.KeyCode.K.Value)
+      task.wait(0.1)
+      keyrelease(Enum.KeyCode.K.Value)
+   end,
 })
 
 local SettingsTab = Window:CreateTab("SettingsTab", 15402995645) -- ícono opcional

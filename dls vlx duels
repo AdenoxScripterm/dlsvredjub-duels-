@@ -275,7 +275,7 @@ end
 end
 
 RunService.Heartbeat:Connect(function()
-    if IsInvisibleToggle then
+    if IsInvisibleToggle and Invisible_HRP and Invisible_Humanoid then
         local OriginalCFrame = Invisible_HRP.CFrame
         local OriginalCameraOffset = Invisible_Humanoid.CameraOffset
 
@@ -328,9 +328,9 @@ while true do
 RunService.Heartbeat:Wait()
 
 if autoShootKill and currentTool then
-if not IsInvisibleToggle then
+if not Invisible_Character or not Invisible_HRP then
         SetupInvisibleCharacter()
-        ApplyInvisible(true)
+    end
 for _, enemy in pairs(getEnemyPlayers()) do
 if enemy and enemy.Character then
 local hum = enemy.Character:FindFirstChild("Humanoid")
@@ -403,7 +403,8 @@ Callback = function(v)
     autoShootKill = v
 
     if not v then
-        ApplyInvisible(false)
+            IsInvisibleToggle = false
+            ApplyInvisible(false)
     end
 end
 })

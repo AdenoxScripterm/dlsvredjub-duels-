@@ -370,6 +370,13 @@ end)
 local MiscTab = Window:CreateTab("Misc", 15403119388)
 
 MiscTab:CreateButton({
+Name = "Shift Lock Celular",
+Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AdenoxScripterm/ShiftLock-Mobile/refs/heads/main/shiftlockk"))()
+end
+})
+
+MiscTab:CreateButton({
 Name = "YouTube Música (Spotify Temu)",
 Callback = function()
 loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-YouTube-Music-Player-72222"))()

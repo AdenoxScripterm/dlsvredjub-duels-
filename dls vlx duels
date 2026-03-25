@@ -56,6 +56,7 @@ local IsHitboxActive = false
 local CurrentHitboxSize = 20
 local CurrentHitboxTransparency = 0.5
 local HighlightColor = Color3.fromRGB(255,215,0)
+local HighlightTransparency = 0.5
 
 -- TEAM DETECT
 local function getTeamFrames()
@@ -351,7 +352,9 @@ if _G.HighlightESP and hum and hum.Health > 0 and isEnemy then
     if not highlight then      
         highlight = Instance.new("Highlight")      
         highlight.Name = "GoldenHighlight"      
-        highlight.FillColor = HighlightColor      
+        highlight.FillColor = HighlightColor
+        highlight.FillTransparency = HighlightTransparency
+        highlight.OutlineTransparency = 0
         highlight.Parent = p.Character      
     end      
     highlight.Enabled = true      
@@ -366,6 +369,18 @@ end
 end
 
 end)
+
+VisTab:CreateSlider({
+    Name = "Transparencia Del Highlight (ESP)",
+    Range = {0, 1},
+    Increment = 0.1,
+    Suffix = "Transparencia",
+    CurrentValue = HighlightTransparency,
+    Flag = "HighlightTransparency",
+    Callback = function(Value)
+        HighlightTransparency = Value
+    end
+})
 
 VisTab:CreateColorPicker({
     Name = "Color Highlight",

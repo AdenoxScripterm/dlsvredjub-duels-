@@ -55,6 +55,7 @@ local currentTool = nil
 local IsHitboxActive = false
 local CurrentHitboxSize = 20
 local CurrentHitboxTransparency = 0.5
+local HighlightColor = Color3.fromRGB(255,215,0)
 
 -- TEAM DETECT
 local function getTeamFrames()
@@ -350,7 +351,7 @@ if _G.HighlightESP and hum and hum.Health > 0 and isEnemy then
     if not highlight then      
         highlight = Instance.new("Highlight")      
         highlight.Name = "GoldenHighlight"      
-        highlight.FillColor = Color3.fromRGB(255,215,0)      
+        highlight.FillColor = HighlightColor      
         highlight.Parent = p.Character      
     end      
     highlight.Enabled = true      
@@ -365,6 +366,29 @@ end
 end
 
 end)
+
+VisTab:CreateColorPicker({
+    Name = "Color Highlight",
+    Color = HighlightColor,
+    Flag = "HighlightColor",
+    Callback = function(Value)
+        HighlightColor = Value
+    end
+})
+
+VisTab:CreateButton({
+    Name = "Aplicar Color Highlight",
+    Callback = function()
+        for _, p in pairs(game:GetService("Players"):GetPlayers()) do
+            if p ~= game.Players.LocalPlayer and p.Character then
+                local highlight = p.Character:FindFirstChild("GoldenHighlight")
+                if highlight then
+                    highlight.FillColor = HighlightColor
+                end
+            end
+        end
+    end
+})
 
 -- MISC
 local MiscTab = Window:CreateTab("Misc", 15403119388)

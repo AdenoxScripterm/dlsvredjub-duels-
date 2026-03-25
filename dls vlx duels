@@ -437,7 +437,7 @@ end)
 MiscTab:CreateButton({
    Name = "Ocultar UI",
    Callback = function()
-      Rayfield:SetVisibility(false)
+      Rayfield:Destroy()
    end,
 })
 

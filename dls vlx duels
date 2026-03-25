@@ -383,7 +383,7 @@ VisTab:CreateSlider({
 })
 
 VisTab:CreateColorPicker({
-    Name = "Color Highlight",
+    Name = "Color Del Highlight (ESP)",
     Color = HighlightColor,
     Flag = "HighlightColor",
     Callback = function(Value)
@@ -399,6 +399,7 @@ VisTab:CreateButton({
                 local highlight = p.Character:FindFirstChild("GoldenHighlight")
                 if highlight then
                     highlight.FillColor = HighlightColor
+                    highlight.FillTransparency = HighlightTransparency
                 end
             end
         end

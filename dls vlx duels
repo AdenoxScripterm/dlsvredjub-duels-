@@ -414,6 +414,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/7yd7/Hub/refs/heads/B
 end
 })
 
+local MiscTabSection1 = MiscTab:CreateSection("Funciones")
+
 MiscTab:CreateSlider({
 Name = "Hitbox Tamaño",
 Range = {1, 200},
@@ -465,16 +467,16 @@ end
 end
 end)
 
-MiscTab:CreateButton({
-   Name = "Ocultar UI",
+local SettingsTab = Window:CreateTab("Configuración", 15402995645) -- ícono opcional
+
+local SettingsTabSection1 = SettingsTab:CreateSection("Configuraciones Del Script")
+
+SettingsTab:CreateButton({
+   Name = "Ocultar UI (Ocultar El Script)",
    Callback = function()
       Rayfield:Destroy()
    end,
 })
-
-local SettingsTab = Window:CreateTab("Configuración", 15402995645) -- ícono opcional
-
-local ThemesSection = SettingsTab:CreateSection("Temas")
 
 Rayfield:Notify({
 Title = "Salvred Hub",

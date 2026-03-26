@@ -461,25 +461,24 @@ end
 })
 
 MiscTab:CreateToggle({
-Name = "Activar Hitbox",
-CurrentValue = false,
-Flag = "HitboxToggle",
-Callback = function(Value)
-IsHitboxActive = Value
+    Name = "Activar Hitbox",
+    CurrentValue = false,
+    Flag = "HitboxToggle",
+    Callback = function(Value)
+        IsHitboxActive = Value
 
-if not Value then
-    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
-        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            local root = player.Character.HumanoidRootPart
-            root.Size = Vector3.new(2, 2, 1)
-            root.Transparency = 0
-            root.Material = Enum.Material.Plastic
-            root.CanCollide = true
+        if not Value then
+            for _, player in pairs(getEnemyPlayers()) do
+                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    local root = player.Character.HumanoidRootPart
+                    root.Size = Vector3.new(2, 2, 1)
+                    root.Transparency = 0
+                    root.Material = Enum.Material.Plastic
+                    root.CanCollide = true
+                end
+            end
         end
     end
-end
-
-end
 })
 
 MiscTab:CreateInput({

@@ -417,6 +417,22 @@ end
 })
 
 MiscTab:CreateButton({
+Name = "Ocultar Tu Nombre (Solo Tu Lo Ves)",
+Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AdenoxScripterm/OcultarelName/refs/heads/main/falsename"))()
+end
+})
+
+MiscTab:CreateButton({
+Name = "Cursor De PC",
+Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AdenoxScripterm/curzorformining/refs/heads/main/crzor"))()
+end
+})
+
+local MiscTabSection1 = MiscTab:CreateSection("Para Usar")
+
+MiscTab:CreateButton({
 Name = "YouTube Música (Spotify Temu)",
 Callback = function()
 loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-YouTube-Music-Player-72222"))()
@@ -430,7 +446,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/7yd7/Hub/refs/heads/B
 end
 })
 
-local MiscTabSection1 = MiscTab:CreateSection("Funciones")
+local MiscTabSection2 = MiscTab:CreateSection("Funciones")
 
 MiscTab:CreateSlider({
 Name = "Hitbox Tamaño",

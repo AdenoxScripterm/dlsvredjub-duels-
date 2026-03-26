@@ -521,11 +521,7 @@ sound.Volume = 1
 sound.Looped = true
 sound.Parent = game:GetService("SoundService")
 
--- Canción actual
-local currentSong = "rbxassetid://87878635815212"
-local startTime = 15 -- solo para Kiko
-
--- Función para aplicar tiempo correcto
+-- Función tiempo
 local function getStartTime(id)
    if id == "rbxassetid://87878635815212" then
       return 15
@@ -534,44 +530,64 @@ local function getStartTime(id)
    end
 end
 
--- Dropdown
-SettingsTab:CreateDropdown({
-   Name = "Seleccionar Canción",
-   Options = {
-      "Canción 1",
-      "Canción 2",
-      "Kiko Envidiaba Al Chavo"
-   },
-   CurrentOption = "Kiko Envidiaba Al Chavo",
-   Callback = function(Option)
-      if Option == "Canción 1" then
-         currentSong = "rbxassetid://118970987471842"
-      elseif Option == "Canción 2" then
-         currentSong = "rbxassetid://92435994958143"
-      elseif Option == "Kiko Envidiaba Al Chavo" then
-         currentSong = "rbxassetid://87878635815212"
-      end
-      
-      if sound.IsPlaying then
-         sound:Stop()
-         sound.SoundId = currentSong
-         sound.TimePosition = getStartTime(currentSong)
-         sound:Play()
+-- Toggles refs
+local Toggle1, Toggle2, Toggle3
+
+-- Función para activar canción
+local function playSong(id)
+   sound:Stop()
+   sound.SoundId = id
+   sound.TimePosition = getStartTime(id)
+   sound:Play()
+end
+
+-- Toggle 1
+Toggle1 = SettingsTab:CreateToggle({
+   Name = "Canción 1",
+   CurrentValue = false,
+   Callback = function(Value)
+      if Value then
+         Toggle2:Set(false)
+         Toggle3:Set(false)
+         playSong("rbxassetid://118970987471842")
+      else
+         if not Toggle2.CurrentValue and not Toggle3.CurrentValue then
+            sound:Stop()
+         end
       end
    end,
 })
 
--- Toggle
-SettingsTab:CreateToggle({
-   Name = "Reproducir Música",
+-- Toggle 2
+Toggle2 = SettingsTab:CreateToggle({
+   Name = "Canción 2",
    CurrentValue = false,
    Callback = function(Value)
       if Value then
-         sound.SoundId = currentSong
-         sound.TimePosition = getStartTime(currentSong)
-         sound:Play()
+         Toggle1:Set(false)
+         Toggle3:Set(false)
+         playSong("rbxassetid://92435994958143")
       else
-         sound:Stop()
+         if not Toggle1.CurrentValue and not Toggle3.CurrentValue then
+            sound:Stop()
+         end
+      end
+   end,
+})
+
+-- Toggle 3 (Kiko)
+Toggle3 = SettingsTab:CreateToggle({
+   Name = "Kiko Envidiaba Al Chavo",
+   CurrentValue = false,
+   Callback = function(Value)
+      if Value then
+         Toggle1:Set(false)
+         Toggle2:Set(false)
+         playSong("rbxassetid://87878635815212")
+      else
+         if not Toggle1.CurrentValue and not Toggle2.CurrentValue then
+            sound:Stop()
+         end
       end
    end,
 })

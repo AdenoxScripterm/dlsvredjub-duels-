@@ -506,6 +506,26 @@ SettingsTab:CreateButton({
    end,
 })
 
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://87878635815212"
+sound.Volume = 1
+sound.Looped = true
+sound.Parent = game:GetService("SoundService")
+
+-- Toggle en Settings
+SettingsTab:CreateToggle({
+   Name = "Reproducir: El Kiko Cojia Al Chavo",
+   CurrentValue = false,
+   Callback = function(Value)
+      if Value then
+         sound.TimePosition = 15 -- empieza en el segundo 15
+         sound:Play()
+      else
+         sound:Stop()
+      end
+   end,
+})
+
 Rayfield:Notify({
 Title = "Salvred Hub",
 Content = "Script cargado correctamente, puede que tu pito se haga mas chico.",

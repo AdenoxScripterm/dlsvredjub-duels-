@@ -51,6 +51,7 @@ _G.HighlightESP = false
 local clickShoot = false
 local autoShoot = false
 local autoShootKill = false
+local autoEquipTool = false
 local currentTool = nil
 local IsHitboxActive = false
 local CurrentHitboxSize = 20
@@ -273,7 +274,7 @@ end)
 
 -- AUTO EQUIP TOOL
 RunService.Heartbeat:Connect(function()
-    if autoShootKill then
+    if autoShootKill and autoEquipTool then
         local char = LocalPlayer.Character
         local backpack = LocalPlayer:FindFirstChild("Backpack")
 
@@ -326,6 +327,14 @@ GunTab:CreateToggle({
 Name = "Auto Shoot (Auto Kill)",
 CurrentValue = false,
 Callback = function(v) autoShootKill = v end
+})
+
+local GunTabSection1 = GunTab:CreateSection("Configuración De Auto Shoot Kill")
+
+GunTab:CreateToggle({
+Name = "Auto Equipar Arma (Cuando Tienes Auto Shoot Kill)",
+CurrentValue = false,
+Callback = function(v) autoEquipTool = v end
 })
 
 local VisTab = Window:CreateTab("Visuals", 15403203770)

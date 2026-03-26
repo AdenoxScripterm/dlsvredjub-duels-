@@ -506,19 +506,60 @@ SettingsTab:CreateButton({
    end,
 })
 
+-- Sound
 local sound = Instance.new("Sound")
-sound.SoundId = "rbxassetid://87878635815212"
 sound.Volume = 1
 sound.Looped = true
 sound.Parent = game:GetService("SoundService")
 
--- Toggle en Settings
+-- Canción actual
+local currentSong = "rbxassetid://87878635815212"
+local startTime = 15 -- solo para Kiko
+
+-- Función para aplicar tiempo correcto
+local function getStartTime(id)
+   if id == "rbxassetid://87878635815212" then
+      return 15
+   else
+      return 0
+   end
+end
+
+-- Dropdown
+SettingsTab:CreateDropdown({
+   Name = "Seleccionar Canción",
+   Options = {
+      "Canción 1",
+      "Canción 2",
+      "Kiko Envidiaba Al Chavo"
+   },
+   CurrentOption = "Kiko Envidiaba Al Chavo",
+   Callback = function(Option)
+      if Option == "Canción 1" then
+         currentSong = "rbxassetid://118970987471842"
+      elseif Option == "Canción 2" then
+         currentSong = "rbxassetid://92435994958143"
+      elseif Option == "Kiko Envidiaba Al Chavo" then
+         currentSong = "rbxassetid://87878635815212"
+      end
+      
+      if sound.IsPlaying then
+         sound:Stop()
+         sound.SoundId = currentSong
+         sound.TimePosition = getStartTime(currentSong)
+         sound:Play()
+      end
+   end,
+})
+
+-- Toggle
 SettingsTab:CreateToggle({
-   Name = "Reproducir: El Kiko Cojia Al Chavo",
+   Name = "Reproducir Música",
    CurrentValue = false,
    Callback = function(Value)
       if Value then
-         sound.TimePosition = 15 -- empieza en el segundo 15
+         sound.SoundId = currentSong
+         sound.TimePosition = getStartTime(currentSong)
          sound:Play()
       else
          sound:Stop()

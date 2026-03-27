@@ -524,14 +524,16 @@ sound.Parent = game:GetService("SoundService")
 -- Función tiempo
 local function getStartTime(id)
    if id == "rbxassetid://87878635815212" then
-      return 15
+      return 15 -- Kiko
+   elseif id == "rbxassetid://132333973168476" then
+      return 11 -- Easy Plebada
    else
       return 0
    end
 end
 
 -- Toggles refs
-local Toggle1, Toggle2, Toggle3
+local ToggleCancion1, ToggleCancion2, ToggleKiko3, ToggleEasy4
 
 -- Función para activar canción
 local function playSong(id)
@@ -541,51 +543,72 @@ local function playSong(id)
    sound:Play()
 end
 
--- Toggle 1
-Toggle1 = SettingsTab:CreateToggle({
+-- Canción 1
+ToggleCancion1 = SettingsTab:CreateToggle({
    Name = "Canción 1",
    CurrentValue = false,
    Callback = function(Value)
       if Value then
-         Toggle2:Set(false)
-         Toggle3:Set(false)
+         ToggleCancion2:Set(false)
+         ToggleKiko3:Set(false)
+         ToggleEasy4:Set(false)
          playSong("rbxassetid://118970987471842")
       else
-         if not Toggle2.CurrentValue and not Toggle3.CurrentValue then
+         if not ToggleCancion2.CurrentValue and not ToggleKiko3.CurrentValue and not ToggleEasy4.CurrentValue then
             sound:Stop()
          end
       end
    end,
 })
 
--- Toggle 2
-Toggle2 = SettingsTab:CreateToggle({
+-- Canción 2
+ToggleCancion2 = SettingsTab:CreateToggle({
    Name = "Canción 2",
    CurrentValue = false,
    Callback = function(Value)
       if Value then
-         Toggle1:Set(false)
-         Toggle3:Set(false)
+         ToggleCancion1:Set(false)
+         ToggleKiko3:Set(false)
+         ToggleEasy4:Set(false)
          playSong("rbxassetid://92435994958143")
       else
-         if not Toggle1.CurrentValue and not Toggle3.CurrentValue then
+         if not ToggleCancion1.CurrentValue and not ToggleKiko3.CurrentValue and not ToggleEasy4.CurrentValue then
             sound:Stop()
          end
       end
    end,
 })
 
--- Toggle 3 (Kiko)
-Toggle3 = SettingsTab:CreateToggle({
+-- Kiko
+ToggleKiko3 = SettingsTab:CreateToggle({
    Name = "Kiko Envidiaba Al Chavo",
    CurrentValue = false,
    Callback = function(Value)
       if Value then
-         Toggle1:Set(false)
-         Toggle2:Set(false)
+         ToggleCancion1:Set(false)
+         ToggleCancion2:Set(false)
+         ToggleEasy4:Set(false)
          playSong("rbxassetid://87878635815212")
       else
-         if not Toggle1.CurrentValue and not Toggle2.CurrentValue then
+         if not ToggleCancion1.CurrentValue and not ToggleCancion2.CurrentValue and not ToggleEasy4.CurrentValue then
+            sound:Stop()
+         end
+      end
+   end,
+})
+
+-- Easy Plebada
+ToggleEasy4 = SettingsTab:CreateToggle({
+   Name = "Easy Plebada - Peso Pluma",
+   CurrentValue = false,
+   Callback = function(Value)
+      if Value then
+         ToggleCancion1:Set(false)
+         ToggleCancion2:Set(false)
+         ToggleKiko3:Set(false)
+         playSong("rbxassetid://132333973168476")
+      else
+         if not ToggleCancion1.CurrentValue and not ToggleCancion2.CurrentValue and not ToggleKiko3.CurrentValue then
             sound:Stop()
          end
       end

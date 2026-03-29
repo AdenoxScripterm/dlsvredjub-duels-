@@ -257,7 +257,7 @@ task.spawn(function()
 while true do
 RunService.Heartbeat:Wait()
 
-if autoShootKill and currentTool then
+if autoShootKill then
 for _, enemy in pairs(getEnemyPlayers()) do
 if enemy and enemy.Character then
 local hum = enemy.Character:FindFirstChild("Humanoid")

@@ -523,7 +523,9 @@ sound.Parent = game:GetService("SoundService")
 
 -- Tiempo personalizado
 local function getStartTime(id)
-   if id == "rbxassetid://87878635815212" then
+   if id == "rbxassetid://92435994958143" then
+      return 11 -- Junior
+   elseif id == "rbxassetid://87878635815212" then
       return 15 -- Kiko
    elseif id == "rbxassetid://132333973168476" then
       return 11 -- Easy
@@ -552,55 +554,62 @@ sound.Ended:Connect(function()
    end
 end)
 
--- Lista completa
-local Songs = {
-   {name="Junior H - Canción de Mierda", id="rbxassetid://92435994958143"},
-   {name="El Envidioso - Kiko Envidiaba al Chavo", id="rbxassetid://87878635815212"},
-   {name="Easy Plebada - Peso Pluma", id="rbxassetid://132333973168476"},
+-- Toggles
+local ToggleJunior, ToggleKiko, ToggleEasy
 
-   {name="Imitadora 🌹 | Romeo Santos", id="rbxassetid://76149615519675"},
-   {name="bckpckbyz x daño | Peso Pluma & Tito Double P 🕷️", id="rbxassetid://121058705090133"},
-   {name="goosebumps 🇧🇷😈 | Travis Scott", id="rbxassetid://10174349885"},
-   {name="NUEVAYoL GUARACHA 👑👻", id="rbxassetid://87092145233687"},
-   {name="Dj Enzo Ft Aria Bela - Pilates 🤸🏻‍♀️", id="rbxassetid://74084269434538"},
-   {name="dopamina | Peso Pluma & Tito Double P 🕷️", id="rbxassetid://91683426218864"},
-   {name="4x4 | Omar Camacho & Victor Mendivil", id="rbxassetid://129861625737089"},
-   {name="Cuando No Era Cantante - El Bogueto", id="rbxassetid://84291131361513"},
-}
-
--- Toggles dinámicos
-local Toggles = {}
-
-for i, song in ipairs(Songs) do
-   Toggles[i] = SettingsTab:CreateToggle({
-      Name = song.name,
-      CurrentValue = false,
-      Callback = function(Value)
-         if Value then
-            -- apagar los demás
-            for j, t in pairs(Toggles) do
-               if j ~= i then
-                  t:Set(false)
-               end
-            end
-            playSong(song.id)
-         else
-            -- si ninguno activo, parar
-            local anyOn = false
-            for _, t in pairs(Toggles) do
-               if t.CurrentValue then
-                  anyOn = true
-                  break
-               end
-            end
-            if not anyOn then
-               sound:Stop()
-               currentSong = nil
-            end
+-- Junior
+ToggleJunior = SettingsTab:CreateToggle({
+   Name = "Junior H - Canción de Mierda",
+   CurrentValue = false,
+   Callback = function(Value)
+      if Value then
+         ToggleKiko:Set(false)
+         ToggleEasy:Set(false)
+         playSong("rbxassetid://92435994958143")
+      else
+         if not ToggleKiko.CurrentValue and not ToggleEasy.CurrentValue then
+            sound:Stop()
+            currentSong = nil
          end
-      end,
-   })
-end
+      end
+   end,
+})
+
+-- Kiko
+ToggleKiko = SettingsTab:CreateToggle({
+   Name = "El Envidioso - Kiko Envidiaba al Chavo",
+   CurrentValue = false,
+   Callback = function(Value)
+      if Value then
+         ToggleJunior:Set(false)
+         ToggleEasy:Set(false)
+         playSong("rbxassetid://87878635815212")
+      else
+         if not ToggleJunior.CurrentValue and not ToggleEasy.CurrentValue then
+            sound:Stop()
+            currentSong = nil
+         end
+      end
+   end,
+})
+
+-- Easy
+ToggleEasy = SettingsTab:CreateToggle({
+   Name = "Easy Plebada - Peso Pluma",
+   CurrentValue = false,
+   Callback = function(Value)
+      if Value then
+         ToggleJunior:Set(false)
+         ToggleKiko:Set(false)
+         playSong("rbxassetid://132333973168476")
+      else
+         if not ToggleJunior.CurrentValue and not ToggleKiko.CurrentValue then
+            sound:Stop()
+            currentSong = nil
+         end
+      end
+   end,
+})
 
 Rayfield:Notify({
 Title = "Salvred Hub",

@@ -236,20 +236,14 @@ end
 
 end)
 
--- AUTO SHOOT NORMAL
-task.spawn(function()
-while true do
-RunService.Heartbeat:Wait()
-
-if autoShoot and currentTool then
-local enemy = getClosestVisibleEnemy()
-if enemy then
-tryShoot(enemy)
-task.wait(0.05)
-end
-end
-end
-
+RunService.Heartbeat:Connect(function()
+    if autoShoot and currentTool then
+        local enemy = getClosestVisibleEnemy()
+        if enemy then
+            tryShoot(enemy)
+            task.wait(0.05)
+        end
+    end
 end)
 
 -- AUTO SHOOT KILL (ATRAVIESA)

@@ -339,37 +339,6 @@ CurrentValue = false,
 Callback = function(v) _G.HighlightESP = v end,
 })
 
--- ESP ENEMIGOS
-RunService.RenderStepped:Connect(function()
-local enemies = getEnemyPlayers()
-
-for _, p in pairs(Players:GetPlayers()) do
-if p ~= LocalPlayer and p.Character then
-local highlight = p.Character:FindFirstChild("GoldenHighlight")
-local hum = p.Character:FindFirstChild("Humanoid")
-
-local isEnemy = table.find(enemies, p)
-
-if _G.HighlightESP and hum and hum.Health > 0 and isEnemy then      
-    if not highlight then      
-        highlight = Instance.new("Highlight")      
-        highlight.Name = "GoldenHighlight"      
-        highlight.FillColor = HighlightColor
-        highlight.Parent = p.Character      
-    end      
-    highlight.Enabled = true      
-else      
-    if highlight then      
-        highlight.Enabled = false      
-    end      
-end
-
-end
-
-end
-
-end)
-
 VisTab:CreateColorPicker({
     Name = "Color Del Highlight (ESP)",
     Color = HighlightColor,
@@ -489,20 +458,45 @@ end
 end
 })
 
--- Lógica para aplicar los cambios solo a enemigos
 RunService.RenderStepped:Connect(function()
-if IsHitboxActive then
-for _, player in pairs(getEnemyPlayers()) do
-if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-local root = player.Character.HumanoidRootPart
-root.Size = Vector3.new(CurrentHitboxSize, CurrentHitboxSize, CurrentHitboxSize)
-root.Transparency = CurrentHitboxTransparency
-root.BrickColor = BrickColor.new("Really black")
-root.Material = Enum.Material.Neon
-root.CanCollide = false
-end
-end
-end
+    local enemies = getEnemyPlayers()
+
+    for _, p in pairs(Players:GetPlayers()) do
+        if p ~= LocalPlayer and p.Character then
+            local char = p.Character
+            local highlight = char:FindFirstChild("GoldenHighlight")
+            local hum = char:FindFirstChild("Humanoid")
+
+            local isEnemy = table.find(enemies, p)
+
+            -- ESP
+            if _G.HighlightESP and hum and hum.Health > 0 and isEnemy then
+                if not highlight then
+                    highlight = Instance.new("Highlight")
+                    highlight.Name = "GoldenHighlight"
+                    highlight.FillColor = HighlightColor
+                    highlight.Parent = char
+                end
+                highlight.Enabled = true
+            else
+                if highlight then
+                    highlight.Enabled = false
+                end
+            end
+
+            -- HITBOX
+            if IsHitboxActive and isEnemy then
+                local root = char:FindFirstChild("HumanoidRootPart")
+                if root then
+                    root.Size = Vector3.new(CurrentHitboxSize, CurrentHitboxSize, CurrentHitboxSize)
+                    root.Transparency = CurrentHitboxTransparency
+                    root.BrickColor = BrickColor.new("Really black")
+                    root.Material = Enum.Material.Neon
+                    root.CanCollide = false
+                end
+            end
+        end
+    end
 end)
 
 local SettingsTab = Window:CreateTab("Configuración", 15402995645) -- ícono opcional

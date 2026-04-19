@@ -17,7 +17,7 @@ local Window = Rayfield:CreateWindow({
    Name = "Salvred Hub | " .. executor .. " | " .. GameName .. " | " .. displayName,
    Icon = 15403073949,
    LoadingTitle = "Salvred Hub (PANO) Tutax Loco",
-   LoadingSubtitle = subtitleText,
+   LoadingSubtitle = "[DUELS] Murderers Vs Sheriffs",
    ShowText = "Salvred Hub",
    Theme = "Default",
 

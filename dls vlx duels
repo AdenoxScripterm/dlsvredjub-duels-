@@ -10,11 +10,14 @@ local GameName = game:GetService("MarketplaceService"):GetProductInfo(game.Place
 local Players = game:GetService("Players")
 local displayName = Players.LocalPlayer.DisplayName
 
+-- Subtitle FIX
+local subtitleText = "[DUELS] Murderers Vs Sheriffs | " .. GameName .. " | " .. displayName
+
 local Window = Rayfield:CreateWindow({
    Name = "Salvred Hub | " .. executor .. " | " .. GameName .. " | " .. displayName,
    Icon = 15403073949,
    LoadingTitle = "Salvred Hub (PANO) Tutax Loco",
-   LoadingSubtitle = "[DUELS] Murderers Vs Sheriffs | " .. GameName .. " | " .. displayName,
+   LoadingSubtitle = subtitleText,
    ShowText = "Salvred Hub",
    Theme = "Default",
 

@@ -262,26 +262,19 @@ RunService.Heartbeat:Connect(function()
             task.wait(0.05)
         end
     end
-end)
 
--- AUTO SHOOT KILL (ATRAVIESA)
-task.spawn(function()
-while true do
-RunService.Heartbeat:Wait()
-
-if autoShootKill and currentTool then
-for _, enemy in pairs(getEnemyPlayers()) do
-if enemy and enemy.Character then
-local hum = enemy.Character:FindFirstChild("Humanoid")
-if hum and hum.Health > 0 then
-tryShoot(enemy)
-task.wait(0.05)
-end
-end
-end
-end
-end
-
+    -- AUTO SHOOT KILL (ATRAVIESA)
+    if autoShootKill and currentTool then
+        for _, enemy in pairs(getEnemyPlayers()) do
+            if enemy and enemy.Character then
+                local hum = enemy.Character:FindFirstChild("Humanoid")
+                if hum and hum.Health > 0 then
+                    tryShoot(enemy)
+                    task.wait(0.05)
+                end
+            end
+        end
+    end
 end)
 
 -- CLICK
@@ -610,3 +603,25 @@ Title = "Salvred Hub",
 Content = "Script cargado correctamente, puede que tu pito se haga mas chico.",
 Duration = 10
 })
+
+local PGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local function ocultarBoton(v)
+    if v:IsA("TextButton") then
+        local text = string.lower(v.Text or "")
+        if string.find(text, "salvred hub") then
+            v.BackgroundTransparency = 1
+            v.TextTransparency = 1
+        end
+    end
+end
+
+-- Revisar lo que ya existe
+for _, v in pairs(PGui:GetDescendants()) do
+    ocultarBoton(v)
+end
+
+-- Detectar cuando aparezcan nuevos
+PGui.DescendantAdded:Connect(function(v)
+    ocultarBoton(v)
+end)

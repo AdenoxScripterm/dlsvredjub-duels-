@@ -603,25 +603,3 @@ Title = "Salvred Hub",
 Content = "Script cargado correctamente, puede que tu pito se haga mas chico.",
 Duration = 10
 })
-
-local PGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-
-local function ocultarBoton(v)
-    if v:IsA("TextButton") then
-        local text = string.lower(v.Text or "")
-        if string.find(text, "salvred hub") then
-            v.BackgroundTransparency = 1
-            v.TextTransparency = 1
-        end
-    end
-end
-
--- Revisar lo que ya existe
-for _, v in pairs(PGui:GetDescendants()) do
-    ocultarBoton(v)
-end
-
--- Detectar cuando aparezcan nuevos
-PGui.DescendantAdded:Connect(function(v)
-    ocultarBoton(v)
-end)

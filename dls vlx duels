@@ -322,6 +322,50 @@ CurrentValue = false,
 Callback = function(v) autoKnifeKill = v end
 })
 
+local function KnifeKill(target)
+    if not target then return end
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("KnifeKill"):FireServer(target)
+end
+
+GunTab:CreateButton({
+    Name = "Matar Al Más Cercano",
+    Callback = function()
+        local KillFirerLocalPlayer = game:GetService("Players").LocalPlayer
+        local KillFirerCharacter = KillFirerLocalPlayer.Character
+        
+        if not KillFirerCharacter or not KillFirerCharacter:FindFirstChild("HumanoidRootPart") then
+            return
+        end
+
+        local KillFirerRootPart = KillFirerCharacter.HumanoidRootPart
+        local KillFirerClosestPlayer = nil
+        local KillFirerClosestDistance = math.huge
+
+        for _, enemy in pairs(getEnemyPlayers()) do
+            if enemy 
+               and enemy ~= KillFirerLocalPlayer 
+               and enemy.Character 
+               and enemy.Character:FindFirstChild("HumanoidRootPart") then
+                
+                local targetRoot = enemy.Character.HumanoidRootPart
+                local distance = (KillFirerRootPart.Position - targetRoot.Position).Magnitude
+                
+                if distance < KillFirerClosestDistance then
+                    KillFirerClosestDistance = distance
+                    KillFirerClosestPlayer = enemy
+                end
+            end
+        end
+
+        if KillFirerClosestPlayer then
+            local hum = KillFirerClosestPlayer.Character:FindFirstChild("Humanoid")
+            if hum and hum.Health > 0 then
+                KnifeKill(KillFirerClosestPlayer)
+            end
+        end
+    end
+})
+
 local GunTabSection1 = GunTab:CreateSection("Silent Aims")
 
 GunTab:CreateToggle({

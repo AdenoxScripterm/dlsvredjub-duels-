@@ -224,8 +224,8 @@ end
 
 end
 
+-- TOOL DETECT
 RunService.Heartbeat:Connect(function()
-    -- TOOL DETECT
     local char = LocalPlayer.Character
     currentTool = nil
 
@@ -237,9 +237,12 @@ RunService.Heartbeat:Connect(function()
             end
         end
     end
+end)
 
-    -- AUTO EQUIP TOOL
+-- AUTO EQUIP TOOL
+RunService.Heartbeat:Connect(function()
     if autoShootKill and autoEquipTool then
+        local char = LocalPlayer.Character
         local backpack = LocalPlayer:FindFirstChild("Backpack")
 
         if char and backpack then
@@ -253,8 +256,10 @@ RunService.Heartbeat:Connect(function()
             end
         end
     end
+end)
 
-    -- AUTO SHOOT
+-- AUTO SHOOT
+RunService.Heartbeat:Connect(function()
     if autoShoot and currentTool then
         local enemy = getClosestVisibleEnemy()
         if enemy then
@@ -262,8 +267,10 @@ RunService.Heartbeat:Connect(function()
             task.wait(0.05)
         end
     end
+end)
 
-    -- AUTO SHOOT KILL (ATRAVIESA)
+-- AUTO SHOOT KILL (ATRAVIESA)
+RunService.Heartbeat:Connect(function()
     if autoShootKill and currentTool then
         for _, enemy in pairs(getEnemyPlayers()) do
             if enemy and enemy.Character then

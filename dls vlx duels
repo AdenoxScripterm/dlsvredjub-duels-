@@ -382,16 +382,30 @@ Callback = function(v) clickShoot = v end
 
 local GunTabSection2 = GunTab:CreateSection("Auto Shoots")
 
-GunTab:CreateToggle({
-Name = "Auto Shoot",
-CurrentValue = false,
-Callback = function(v) autoShoot = v end
+AutoShootToggle = GunTab:CreateToggle({
+    Name = "Auto Shoot",
+    CurrentValue = false,
+    Callback = function(v)
+        autoShoot = v
+
+        if v then
+            autoShootKill = false
+            AutoShootKillToggle:Set(false)
+        end
+    end
 })
 
-GunTab:CreateToggle({
-Name = "Auto Shoot (Auto Kill)",
-CurrentValue = false,
-Callback = function(v) autoShootKill = v end
+AutoShootKillToggle = GunTab:CreateToggle({
+    Name = "Auto Shoot Kill",
+    CurrentValue = false,
+    Callback = function(v)
+        autoShootKill = v
+
+        if v then
+            autoShoot = false
+            AutoShootToggle:Set(false)
+        end
+    end
 })
 
 local GunTabSection3 = GunTab:CreateSection("Configuración De Auto Shoot Kill")

@@ -224,23 +224,37 @@ end
 
 end
 
--- TOOL DETECT
 RunService.Heartbeat:Connect(function()
-local char = LocalPlayer.Character
-currentTool = nil
+    -- TOOL DETECT
+    local char = LocalPlayer.Character
+    currentTool = nil
 
-if char then
-for _, t in pairs(char:GetChildren()) do
-if t:IsA("Tool") and t:FindFirstChild("fire") then
-currentTool = t
-break
-end
-end
-end
+    if char then
+        for _, t in pairs(char:GetChildren()) do
+            if t:IsA("Tool") and t:FindFirstChild("fire") then
+                currentTool = t
+                break
+            end
+        end
+    end
 
-end)
+    -- AUTO EQUIP TOOL
+    if autoShootKill and autoEquipTool then
+        local backpack = LocalPlayer:FindFirstChild("Backpack")
 
-RunService.Heartbeat:Connect(function()
+        if char and backpack then
+            if not currentTool then
+                for _, tool in pairs(backpack:GetChildren()) do
+                    if tool:IsA("Tool") and tool:FindFirstChild("fire") then
+                        tool.Parent = char
+                        break
+                    end
+                end
+            end
+        end
+    end
+
+    -- AUTO SHOOT
     if autoShoot and currentTool then
         local enemy = getClosestVisibleEnemy()
         if enemy then
@@ -268,26 +282,6 @@ end
 end
 end
 
-end)
-
--- AUTO EQUIP TOOL
-RunService.Heartbeat:Connect(function()
-    if autoShootKill and autoEquipTool then
-        local char = LocalPlayer.Character
-        local backpack = LocalPlayer:FindFirstChild("Backpack")
-
-        if char and backpack then
-            -- Si no hay tool equipada
-            if not currentTool then
-                for _, tool in pairs(backpack:GetChildren()) do
-                    if tool:IsA("Tool") and tool:FindFirstChild("fire") then
-                        tool.Parent = char -- equipa automáticamente
-                        break
-                    end
-                end
-            end
-        end
-    end
 end)
 
 -- CLICK

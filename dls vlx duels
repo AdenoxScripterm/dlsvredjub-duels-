@@ -284,6 +284,25 @@ RunService.Heartbeat:Connect(function()
     end
 end)
 
+local function KnifeKill()
+game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("KnifeKill"):FireServer()
+end
+
+-- AUTO KNIFE KILL
+RunService.Heartbeat:Connect(function()
+if autoKnifeKill then
+for _, enemy in pairs(getEnemyPlayers()) do
+if enemy and enemy.Character then
+local hum = enemy.Character:FindFirstChild("Humanoid")
+if hum and hum.Health > 0 then
+KnifeKill()
+task.wait(0.03)
+end
+end
+end
+end
+end)
+
 -- CLICK
 Mouse.Button1Down:Connect(function()
 if clickShoot and currentTool then
@@ -298,6 +317,14 @@ end)
 local GunTab = Window:CreateTab("Guns", 15403025691)
 
 GunTab:CreateToggle({
+Name = "Auto Knife Kill (Matar A Todos Con Cuchillo)",
+CurrentValue = false,
+Callback = function(v) autoKnifeKill = v end
+})
+
+local GunTabSection1 = GunTab:CreateSection("Silent Aims")
+
+GunTab:CreateToggle({
 Name = "Silent Aim (Disimulado)",
 CurrentValue = false,
 Callback = function(v) _G.SilentAim = v end,
@@ -308,6 +335,8 @@ Name = "Silent Aim (Descarado)",
 CurrentValue = false,
 Callback = function(v) clickShoot = v end
 })
+
+local GunTabSection2 = GunTab:CreateSection("Auto Shoots")
 
 GunTab:CreateToggle({
 Name = "Auto Shoot",
@@ -321,7 +350,7 @@ CurrentValue = false,
 Callback = function(v) autoShootKill = v end
 })
 
-local GunTabSection1 = GunTab:CreateSection("Configuración De Auto Shoot Kill")
+local GunTabSection3 = GunTab:CreateSection("Configuración De Auto Shoot Kill")
 
 GunTab:CreateToggle({
 Name = "Auto Equipar Arma (Cuando Tienes Auto Shoot Kill)",

@@ -691,6 +691,71 @@ ToggleEasy = SettingsTab:CreateToggle({
    end,
 })
 
+local TemasSection = SettingsTab:CreateSection("Temas Del Script")
+
+SettingsTab:CreateButton({
+    Name = "Tema Default",
+    Callback = function()
+        Window.ModifyTheme('Default')
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "Tema Amber Glow",
+    Callback = function()
+        Window.ModifyTheme('AmberGlow')
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "Tema Amethyst",
+    Callback = function()
+        Window.ModifyTheme('Amethyst')
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "Tema Bloom",
+    Callback = function()
+        Window.ModifyTheme('Bloom')
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "Tema Azul Oscuro",
+    Callback = function()
+        Window.ModifyTheme('DarkBlue')
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "Tema Verde",
+    Callback = function()
+        Window.ModifyTheme('Green')
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "Tema Light",
+    Callback = function()
+        Window.ModifyTheme('Light')
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "Tema Ocean",
+    Callback = function()
+        Window.ModifyTheme('Ocean')
+    end
+})
+
+SettingsTab:CreateButton({
+    Name = "Tema Serenity",
+    Callback = function()
+        Window.ModifyTheme('Serenity')
+    end
+})
+
 Rayfield:Notify({
 Title = "Salvred Hub",
 Content = "Script cargado correctamente, puede que tu pito se haga mas chico.",

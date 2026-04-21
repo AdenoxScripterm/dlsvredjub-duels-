@@ -472,6 +472,7 @@ MiscTab:CreateButton({
 Name = "+20 FPS, ESTILO L-GANG",
 Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/AdenoxScripterm/Aifps/refs/heads/main/fpsbust"))()
+-- Window.ModifyTheme('AmberGlow')
 end
 })
 

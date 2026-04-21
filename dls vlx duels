@@ -697,6 +697,30 @@ ToggleEasy = SettingsTab:CreateToggle({
    end,
 })
 
+local themes = {
+    "Default",
+    "AmberGlow",
+    "Amethyst",
+    "Bloom",
+    "DarkBlue",
+    "Green",
+    "Light",
+    "Ocean",
+    "Serenity"
+}
+
+SettingsTab:CreateDropdown({
+    Name = "Seleccionar Tema Del Script",
+    Options = themes,
+    CurrentOption = {"Default"},
+    Callback = function(option)
+        local selected = option[1]
+        pcall(function()
+            Window:ModifyTheme(selected)
+        end)
+    end
+})
+
 Rayfield:Notify({
 Title = "Salvred Hub",
 Content = "Script cargado correctamente, puede que tu pito se haga mas chico.",

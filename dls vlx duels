@@ -708,7 +708,7 @@ SettingsTab:CreateDropdown({
     Callback = function(option)
         local selected = option[1]
         pcall(function()
-            Window:ModifyTheme(selected)
+            Window.ModifyTheme(selected)
         end)
     end
 })

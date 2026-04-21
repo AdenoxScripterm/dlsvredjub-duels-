@@ -38,6 +38,14 @@ local Window = Rayfield:CreateWindow({
    KeySystem = false
 })
 
+local function NotificationRayfield(Title, Content, Duration)
+    Rayfield:Notify({
+        Title = Title,
+        Content = Content,
+        Duration = Duration
+    })
+end
+
 -- Servicios
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -694,3 +702,5 @@ Title = "Salvred Hub",
 Content = "Script cargado correctamente, puede que tu pito se haga mas chico.",
 Duration = 10
 })
+
+NotificationRayfield("El Mensho", "LA MERA VERGA DEL CARTEL", 5)

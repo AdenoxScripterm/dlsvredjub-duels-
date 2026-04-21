@@ -269,9 +269,14 @@ end)
 -- AUTO SHOOT
 RunService.Heartbeat:Connect(function()
     if autoShoot and currentTool then
+    local now = tick()
+    local delay = (AutoShootConfgMode == "Legit") and 0.12 or 0
+
+    if now - AutoShootConfgLastShot >= delay then
         local enemy = getClosestVisibleEnemy()
         if enemy then
             tryShoot(enemy)
+            AutoShootConfgLastShot = now
         end
     end
 end)
@@ -397,6 +402,18 @@ AutoShootToggle = GunTab:CreateToggle({
             autoShootKill = false
             AutoShootKillToggle:Set(false)
         end
+    end
+})
+
+local AutoShootConfgMode = "Legit"
+local AutoShootConfgLastShot = 0
+
+SettingsTab:CreateDropdown({
+    Name = "Modo De Auto Shoot",
+    Options = {"Legit", "Santanas"},
+    CurrentOption = {"Legit"},
+    Callback = function(option)
+        AutoShootConfgMode = option[1]
     end
 })
 

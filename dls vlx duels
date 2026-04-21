@@ -11,7 +11,7 @@ local Players = game:GetService("Players")
 local displayName = Players.LocalPlayer.DisplayName
 
 local Window = Rayfield:CreateWindow({
-   Name = "Salvred Hub | " .. executor .. " | " .. GameName .. " | " .. displayName,
+   Name = "Salvredub | " .. executor .. " | " .. GameName .. " | " .. displayName,
    Icon = 15403073949,
    LoadingTitle = "Salvred Hub (PANO) Tutax Loco",
    LoadingSubtitle = "[DUELS] Murderers Vs Sheriffs",
@@ -264,6 +264,7 @@ RunService.Heartbeat:Connect(function()
         local enemy = getClosestVisibleEnemy()
         if enemy then
             tryShoot(enemy)
+            task.wait(0.05)
         end
     end
 end)
@@ -276,6 +277,7 @@ RunService.Heartbeat:Connect(function()
                 local hum = enemy.Character:FindFirstChild("Humanoid")
                 if hum and hum.Health > 0 then
                     tryShoot(enemy)
+                    task.wait(0.05)
                 end
             end
         end
@@ -472,7 +474,7 @@ MiscTab:CreateButton({
 Name = "+20 FPS, ESTILO L-GANG",
 Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/AdenoxScripterm/Aifps/refs/heads/main/fpsbust"))()
-Window.ModifyTheme('Serenity')
+Window.ModifyTheme('AmberGlow')
 end
 })
 

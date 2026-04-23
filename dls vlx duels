@@ -282,10 +282,6 @@ RunService.Heartbeat:Connect(function()
     end
 end)
 
-local function KnifeKill(target)
-game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("KnifeKill"):FireServer(target)
-end
-
 -- AUTO KNIFE KILL
 RunService.Heartbeat:Connect(function()
 if autoKnifeKill then
@@ -293,6 +289,7 @@ for _, enemy in pairs(getEnemyPlayers()) do
 if enemy and enemy.Character then
 local hum = enemy.Character:FindFirstChild("Humanoid")
 if hum then
+for i = 1, 99 do
 game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("KnifeKill"):FireServer(enemy)
 end
 end

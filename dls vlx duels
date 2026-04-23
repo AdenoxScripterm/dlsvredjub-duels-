@@ -286,18 +286,25 @@ local function KnifeKill(target)
 game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("KnifeKill"):FireServer(target)
 end
 
--- AUTO KNIFE KILL
-RunService.Heartbeat:Connect(function()
-if autoKnifeKill then
-for _, enemy in pairs(getEnemyPlayers()) do
-if enemy and enemy.Character then
-local hum = enemy.Character:FindFirstChild("Humanoid")
-if hum and hum.Health > 0 then
-KnifeKill(enemy)
-end
-end
-end
-end
+-- AUTO KNIFE KILL (RENDERSTEPPED + TASK.SPAWN)
+local RunService = game:GetService("RunService")
+
+RunService.RenderStepped:Connect(function()
+	if not autoKnifeKill then return end
+	
+	task.spawn(function()
+		for i = 1, 50 do -- súbelo si quieres más loco
+			for _, enemy in next, getEnemyPlayers() do
+				local char = enemy.Character
+				if char then
+					local hum = char:FindFirstChildOfClass("Humanoid")
+					if hum and hum.Health > 0 then
+						KnifeKill(enemy)
+					end
+				end
+			end
+		end
+	end)
 end)
 
 -- CLICK

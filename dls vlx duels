@@ -294,7 +294,6 @@ if enemy and enemy.Character then
 local hum = enemy.Character:FindFirstChild("Humanoid")
 if hum then
 game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("KnifeKill"):FireServer(enemy)
-KnifeKill(enemy)
 end
 end
 end

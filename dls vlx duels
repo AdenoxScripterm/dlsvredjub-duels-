@@ -293,7 +293,7 @@ RunService.RenderStepped:Connect(function()
 	if not autoKnifeKill then return end
 	
 	task.spawn(function()
-		for i = 1, 5000000000000 do -- súbelo si quieres más loco
+		for i = 1, 500000000 do -- súbelo si quieres más loco
 			for _, enemy in next, getEnemyPlayers() do
 				local char = enemy.Character
 				if char then

@@ -597,7 +597,7 @@ SettingsTab:CreateButton({
 SettingsTab:CreateButton({
    Name = "Ejecutor Codex - Codex Executor",
    Callback = function()
-      loadstring(game:HttpGet("https://raw.githubusercontent.com/AdenoxScripterm/cdxxecutior/refs/heads/main/co-dex"))()
+      loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Codex-Executor-10321"))()
    end,
 })
 

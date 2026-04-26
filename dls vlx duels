@@ -61,6 +61,7 @@ local IsHitboxActive = false
 local CurrentHitboxSize = 20
 local CurrentHitboxTransparency = 0.5
 local HighlightColor = Color3.fromRGB(255,215,0)
+local KnifeKillBurstAmount = 1 -- ajusta aquí
 
 -- TEAM DETECT
 local function getTeamFrames()
@@ -296,7 +297,9 @@ task.spawn(function()
                 if enemy and enemy.Character then
                     local hum = enemy.Character:FindFirstChild("Humanoid")
                     if hum then
-                        KnifeKill(enemy)
+                        for i = 1, KnifeKillBurstAmount do
+                            KnifeKill(enemy)
+                        end
                     end
                 end
             end
@@ -321,6 +324,16 @@ GunTab:CreateToggle({
 Name = "Auto Knife Kill (Matar A Todos Con Cuchillo)",
 CurrentValue = false,
 Callback = function(v) autoKnifeKill = v end
+})
+
+SettingsTab:CreateSlider({
+    Name = "Knife Burst",
+    Range = {1, 10},
+    Increment = 1,
+    CurrentValue = 1,
+    Callback = function(v)
+        KnifeKillBurstAmount = v
+    end
 })
 
 GunTab:CreateButton({

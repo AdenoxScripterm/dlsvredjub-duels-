@@ -594,6 +594,15 @@ SettingsTab:CreateButton({
    end,
 })
 
+SettingsTab:CreateButton({
+   Name = "Ejecutor Codex - Codex Executor",
+   Callback = function()
+      loadstring(game:HttpGet("https://raw.githubusercontent.com/AdenoxScripterm/cdxxecutior/refs/heads/main/co-dex"))()
+   end,
+})
+
+-- https://raw.githubusercontent.com/AdenoxScripterm/cdxxecutior/refs/heads/main/co-dex
+
 -- Sound
 local sound = Instance.new("Sound")
 sound.Volume = 1

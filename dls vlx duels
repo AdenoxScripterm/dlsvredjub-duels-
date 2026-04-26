@@ -283,27 +283,25 @@ RunService.Heartbeat:Connect(function()
 end)
 
 local function KnifeKill(target)
-game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("KnifeKill"):FireServer(target)
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("KnifeKill"):FireServer(target)
 end
 
 -- AUTO KNIFE KILL
 task.spawn(function()
-while true do
-RunService.Heartbeat:Wait()
+    while true do
+        RunService.Heartbeat:Wait()
 
-if autoKnifeKill then
-for _, enemy in pairs(getEnemyPlayers()) do
-if enemy and enemy.Character then
-local hum = enemy.Character:FindFirstChild("Humanoid")
-if hum and hum.Health > 0 then
-KnifeKill(enemy)
-task.wait(0.05)
-end
-end
-end
-end
-end
-
+        if autoKnifeKill then
+            for _, enemy in pairs(getEnemyPlayers()) do
+                if enemy and enemy.Character then
+                    local hum = enemy.Character:FindFirstChild("Humanoid")
+                    if hum then
+                        KnifeKill(enemy)
+                    end
+                end
+            end
+        end
+    end
 end)
 
 -- CLICK
@@ -324,11 +322,6 @@ Name = "Auto Knife Kill (Matar A Todos Con Cuchillo)",
 CurrentValue = false,
 Callback = function(v) autoKnifeKill = v end
 })
-
-local function KnifeKill(target)
-    if not target then return end
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("KnifeKill"):FireServer(target)
-end
 
 GunTab:CreateButton({
     Name = "Matar Al Más Cercano",

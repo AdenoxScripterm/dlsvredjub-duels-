@@ -225,7 +225,7 @@ local function tryShoot(target)
 	end
 
 	-- ShowBeamRemote (lo que querías agregar)
-	local showBeamRemote = currentWeapon:FindFirstChild("showBeam")
+	local showBeamRemote = currentTool:FindFirstChild("showBeam")
 	if showBeamRemote then
 		showBeamRemote:FireServer(pos, hrp.Position, currentTool.Handle or currentTool)
 	end
@@ -653,8 +653,6 @@ SettingsTab:CreateButton({
    end,
 })
 
--- https://raw.githubusercontent.com/AdenoxScripterm/cdxxecutior/refs/heads/main/co-dex
-
 -- Sound
 local sound = Instance.new("Sound")
 sound.Volume = 1
@@ -821,41 +819,3 @@ Title = "Salvred Hub",
 Content = "Script cargado correctamente, puede que tu pito se haga mas chico.",
 Duration = 10
 })
-
-local deathCount = 0
-local lastDeathTime = 0
-
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
-local function onCharacterAdded(char)
-    local hum = char:WaitForChild("Humanoid")
-
-    hum.Died:Connect(function()
-        local now = tick()
-
-        if now - lastDeathTime <= 5 then
-            deathCount = deathCount + 1
-        else
-            deathCount = 1
-        end
-
-        lastDeathTime = now
-
-        if deathCount >= 2 then
-            autoKnifeKill = true
-
-            pcall(function()
-                AutoKnifeKillToggle:Set(true)
-            end)
-
-            deathCount = 0 -- reset
-        end
-    end)
-end
-
-if LocalPlayer.Character then
-    onCharacterAdded(LocalPlayer.Character)
-end
-
-LocalPlayer.CharacterAdded:Connect(onCharacterAdded)

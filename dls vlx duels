@@ -204,24 +204,31 @@ end
 
 -- DISPARO
 local function tryShoot(target)
-if not target or not currentTool then return end
+	if not target or not currentTool then return end
 
-local hrp = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-if not hrp then return end
+	local hrp = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+	if not hrp then return end
 
-local targetHrp = target.Character and target.Character:FindFirstChild("HumanoidRootPart")
-if not targetHrp then return end
+	local targetHrp = target.Character and target.Character:FindFirstChild("HumanoidRootPart")
+	if not targetHrp then return end
 
-local pos = targetHrp.Position
+	local pos = targetHrp.Position
 
-pcall(function() currentTool.fire:FireServer() end)
-pcall(function() currentTool.kill:FireServer(target, (pos - hrp.Position).Unit, hrp.Position) end)
+	-- Disparo principal
+	pcall(function() currentTool.fire:FireServer() end)
+	pcall(function() currentTool.kill:FireServer(target, (pos - hrp.Position).Unit, hrp.Position) end)
 
-local beam = ReplicatedStorage:FindFirstChild("LocalBeam")
-if beam then
-beam:Fire(currentTool.Handle or currentTool, pos)
-end
+	-- Beam local (el que ya tenías)
+	local beam = ReplicatedStorage:FindFirstChild("LocalBeam")
+	if beam then
+		beam:Fire(currentTool.Handle or currentTool, pos)
+	end
 
+	-- ShowBeamRemote (lo que querías agregar)
+	local showBeamRemote = currentWeapon:FindFirstChild("showBeam")
+	if showBeamRemote then
+		showBeamRemote:FireServer(pos, hrp.Position, currentTool.Handle or currentTool)
+	end
 end
 
 -- TOOL DETECT
